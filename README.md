@@ -52,8 +52,8 @@ blanking the page.
 | Phase | What | State |
 |---|---|---|
 | 0 | Data layer — cache, poller, source contract | Done |
-| 1 | Orchestrator, router interface, routing eval set | Next |
-| 2 | Subagents: calendar, weather, news/sports | Planned |
+| 1 | Orchestrator, router interface, routing eval set | Done |
+| 2 | Subagents: calendar, weather, news/sports | Next |
 | 3 | Morning briefing (pre-computed, pushed) | Planned |
 | 4 | Fine-tuned router (LoRA on `llama3.2:3b`) | Planned |
 | 5 | Live sports dashboard | Planned |
@@ -77,6 +77,51 @@ source throughout. Its `status.type.state` (`pre`/`in`/`post`) is uniform across
 every sport, which is what lets one client cover all four.
 
 ---
+
+## Routing
+
+The router predicts a *set* of intents; a mapping turns intents into agents.
+Intents are finer-grained than agents on purpose — `sports` and `news` share one
+agent today, and splitting them later is a one-line change that leaves the
+labelled dataset valid.
+
+Routing is multi-label because "what does my day look like" genuinely needs
+calendar, weather and news at once — that request *is* the morning briefing.
+
+`Router` is a two-method protocol so the Phase 4 fine-tuned model drops in
+without a caller changing.
+
+### Baseline — `llama3.1:8b`, 94 examples
+
+| Metric | |
+|---|---|
+| Exact set match | **86.2%** |
+| Macro-F1 | 0.885 |
+| Latency | 857ms mean / 987ms p95 |
+
+| Slice | Exact match |
+|---|---|
+| core | 94.9% |
+| negative (should abstain) | 83.3% |
+| multi (compound requests) | 78.6% |
+| voice (spoken phrasing) | 62.5% |
+| ambiguous | 57.1% |
+
+Exact set match is the headline: a route counts only if it predicts *precisely*
+the right label set. Partial credit would flatter the multi-intent slice, which
+is the one that decides whether a 3B model is usable here.
+
+**Known weakness — calibration.** 93 of 94 predictions land above the confidence
+floor, so abstention almost never fires and ~13 routes are confidently wrong.
+An LLM asked to self-report confidence mostly says 0.85–0.95 regardless of
+whether it's right. Real softmax probabilities from a fine-tuned classifier are
+the fix, and making abstention actionable is a large part of Phase 4's value.
+
+```bash
+python evals/run_routing.py                              # full set
+python evals/run_routing.py --tag voice                  # one slice
+python evals/run_routing.py --compare evals/results/llm-llama31-8b-v2.json
+```
 
 ## Quick start
 
