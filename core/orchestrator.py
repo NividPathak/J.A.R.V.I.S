@@ -95,10 +95,20 @@ class Orchestrator:
 
     @staticmethod
     def _compose(replies: list[AgentReply]) -> str:
+        """Join agent replies.
+
+        Multiple replies get labelled headings rather than being run together.
+        Each specialist answers from its own data, so an unlabelled concatenation
+        reads as one voice contradicting itself — and there's no cheap way to
+        synthesise a single answer without a further model call on top of the
+        slowest agent.
+        """
         if not replies:
             return "I couldn't reach anything that handles that."
         usable = [r for r in replies if r.ok] or replies
-        return "\n\n".join(r.text for r in usable)
+        if len(usable) == 1:
+            return usable[0].text
+        return "\n\n".join(f"{r.agent.title()} — {r.text}" for r in usable)
 
     def _self_handle(self, route: Route, utterance: str) -> str:
         if Intent.SYSTEM in route.intents:

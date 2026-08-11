@@ -16,13 +16,22 @@ from rich.table import Table
 
 from data.cache import Cache
 from data.poller import Poller
+from data.sources import sports
+from data.sources.calendar import CalendarSource
 from data.sources.nba import NBASource
+from data.sources.news import NewsSource
+from data.sources.weather import WeatherSource
 
 console = Console()
 
 SOURCES = [
+    CalendarSource(),
+    WeatherSource(),
+    NewsSource(),
     NBASource(),
-    # weather, news, nfl, f1, cricket land here as each is built
+    sports.nfl(),
+    sports.f1(),
+    sports.cricket(),
 ]
 
 

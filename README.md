@@ -53,28 +53,64 @@ blanking the page.
 |---|---|---|
 | 0 | Data layer — cache, poller, source contract | Done |
 | 1 | Orchestrator, router interface, routing eval set | Done |
-| 2 | Subagents: calendar, weather, news/sports | Next |
-| 3 | Morning briefing (pre-computed, pushed) | Planned |
+| 2 | Subagents: calendar, weather, news/sports | Done |
+| 3 | Morning briefing (pre-computed, pushed) | Next |
 | 4 | Fine-tuned router (LoRA on `llama3.2:3b`) | Planned |
 | 5 | Live sports dashboard | Planned |
 | 6 | Voice (Whisper → orchestrator → TTS) | Planned |
 
 ---
 
+## Agents
+
+Each agent reads the cache (free, instant — the poller already did the work) and
+uses the model to answer an arbitrary question over it. `handle()` answers
+conversationally; `summary()` returns a templated digest in under 2ms with no
+model call, which is what the morning briefing will use.
+
+| Agent | Reads | Covers |
+|---|---|---|
+| `calendar` | `calendar` | your schedule, availability, what's next |
+| `weather` | `weather` | forecast, advisories, precautions |
+| `news` | `news`, `nba`, `nfl`, `f1`, `cricket` | headlines and sport |
+
 ## Data sources
 
 All free, no API keys required.
 
-| Sport | Source | Verified |
+| Source | Provider | Interval |
 |---|---|---|
-| NBA | ESPN scoreboard + `nba_api` standings | Working |
-| NFL | ESPN scoreboard | Working |
-| F1 | ESPN scoreboard | Working |
-| Cricket | ESPN scoreboard (league-scoped, e.g. `cricket/8048`) | Working |
+| Calendar | macOS Calendar.app via AppleScript | 10 min |
+| Weather | Open-Meteo | 15 min |
+| Advisories | US National Weather Service | 5 min while an alert is active |
+| Headlines | RSS (BBC, NPR, Ars Technica, HN) | 30 min |
+| NBA | ESPN scoreboard + `nba_api` standings | 60s live / 15 min / 6h idle |
+| NFL, F1, Cricket | ESPN scoreboard | same dynamic pacing |
+
+Calendar reads Calendar.app rather than the Google Calendar API — the Google
+account is already synced there, so there's no OAuth flow, no credentials file
+and no token refresh. The query takes ~18s, which is precisely why it sits
+behind the poller.
 
 `nba.com`'s live CDN returns 403 to non-browser clients, so ESPN is the games
 source throughout. Its `status.type.state` (`pre`/`in`/`post`) is uniform across
 every sport, which is what lets one client cover all four.
+
+## Known limitations
+
+**Agent latency.** 7–12s per agent on `llama3.1:8b`. Parallel dispatch means a
+three-agent request costs roughly one agent, but a single turn is still slow.
+
+**Instruction-following.** The 8B model doesn't reliably respect "stay in your
+own domain" or "don't embellish the data", so a request routed to two agents can
+produce one section answering outside its remit. Structural fixes beat
+instructions here — removing a heading from the context stopped it being echoed
+after three rounds of telling it not to. Setting `JARVIS_PROVIDER=anthropic`
+swaps the model without touching anything else.
+
+**Out-of-season leagues.** ESPN keeps serving a league's last completed fixture,
+so cricket currently returns a May IPL final. Every event carries its date for
+that reason. Enumerating in-season league IDs is outstanding.
 
 ---
 

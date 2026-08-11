@@ -15,7 +15,9 @@ from rich.console import Console
 from rich.markup import escape
 from rich.panel import Panel
 
-from agents.base import StubAgent
+from agents.calendar_agent import CalendarAgent
+from agents.news_agent import NewsAgent
+from agents.weather_agent import WeatherAgent
 from config.settings import JARVIS_NAME, JARVIS_USER
 from core.llm import get_llm
 from core.orchestrator import Orchestrator, Response
@@ -23,16 +25,11 @@ from core.router.llm_router import LLMRouter
 
 console = Console()
 
-# Phase 2 replaces these with real agents. The orchestrator doesn't change.
-AGENTS = {
-    "calendar": StubAgent("calendar", "your calendar — meetings, scheduling, availability"),
-    "weather": StubAgent("weather", "weather and advisories — rain, heat, what to wear"),
-    "news": StubAgent("news", "news headlines and sport — NBA, NFL, F1, cricket"),
-}
-
 
 def build(provider: str | None = None, model: str | None = None) -> Orchestrator:
-    return Orchestrator(LLMRouter(get_llm(provider=provider, model=model)), AGENTS)
+    llm = get_llm(provider=provider, model=model)
+    agents = {a.name: a for a in (CalendarAgent(llm=llm), WeatherAgent(llm=llm), NewsAgent(llm=llm))}
+    return Orchestrator(LLMRouter(llm), agents)
 
 
 def show(response: Response, explain: bool = False) -> None:
