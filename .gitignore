@@ -1,0 +1,43 @@
+# Environment & secrets — broad on purpose, this bit went wrong last time
+.env
+.env.*
+*.env
+!.env.example
+secrets/
+*credentials*
+*.pem
+*.key
+
+# Runtime state (cache db, logs, pids)
+var/
+*.log
+*.pid
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.Python
+build/
+dist/
+.venv/
+venv/
+env/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Model artifacts — LoRA adapters and checkpoints are large
+models/
+*.gguf
+*.safetensors
+checkpoints/
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# IDE
+.vscode/
+.idea/
+*.swp
