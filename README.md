@@ -169,12 +169,27 @@ is both fatal and silent.
 
 | | Baseline `llama3.1:8b` | Fine-tuned `llama3.2:3b` | |
 |---|---|---|---|
-| Exact set match | 86.2% | **91.5%** | +5.3pp |
-| Macro-F1 | 0.885 | **0.947** | +7.0% |
+| Exact set match | 86.2% | 91.5% | +5.3pp, **not significant** |
+| Macro-F1 | 0.885 | 0.947 | +7.0% |
 | Latency | 857ms | **372ms** | **2.3× faster** |
 
-A 3B model beating an 8B at less than half the latency, off a 14MB LoRA adapter
-trained in ~7 minutes on an M4.
+**The latency result is solid; the accuracy result is not established.** McNemar's
+exact test on the paired runs gives **p = 0.302** — the tuned router fixed 10
+examples and broke 5, which at 15 discordant pairs is well within chance. The
+95% intervals overlap heavily: baseline [77.8, 91.7], tuned [84.1, 95.6].
+
+The improvement may be real. A 94-example test set simply cannot demonstrate it.
+Detecting a 5pp difference at this discordance rate needs roughly **300 test
+examples**; growing the test set is worth more than any further training, because
+without it a better model is unmeasurable.
+
+Latency needs no such caveat — 2.3× is a systematic measurement across 94 runs,
+not a noisy proportion. It comes off a 14MB LoRA adapter trained in ~7 minutes
+on an M4.
+
+```bash
+python evals/significance.py   # McNemar + Wilson intervals on any two saved runs
+```
 
 | Slice | Baseline | Tuned |
 |---|---|---|
