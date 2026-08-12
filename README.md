@@ -56,8 +56,8 @@ blanking the page.
 | 2 | Subagents: calendar, weather, news/sports | Done |
 | 3 | Morning briefing (pre-computed, pushed) | Done |
 | 4 | Fine-tuned router (LoRA on `llama3.2:3b`) | Done |
-| 5 | Live sports dashboard | Next |
-| 6 | Voice (Whisper → orchestrator → TTS) | Planned |
+| 5 | Live sports dashboard | Done |
+| 6 | Voice (Whisper → orchestrator → TTS) | Next |
 
 ---
 
@@ -107,6 +107,27 @@ forecast is worse than one admitting it couldn't reach the data.
 Installs two launchd agents: the poller (`KeepAlive`, so it restarts if it dies
 and survives reboot) and the briefing on a calendar interval. launchd over cron
 because it handles both of those and needs no login shell.
+
+## Dashboard
+
+```bash
+python dashboard/server.py        # http://localhost:8765
+```
+
+Live scores, fixtures and per-source health for NBA, NFL, F1 and cricket, plus a
+weather and next-meeting strip. Refreshes every 15s.
+
+**It reads the cache and fetches nothing.** The poller remains the only thing
+that touches an upstream, so opening the page in ten tabs costs nothing and
+cannot blow a rate limit. stdlib `http.server` — a localhost read-only view over
+a SQLite file doesn't earn a web framework.
+
+Every state is a **colour plus a word**: `LIVE`, `FINAL`, `UPCOMING`, and per
+source `live data` / `stale` / `failing` / `no data`. A bare coloured dot is
+unreadable for colour-blind users and vanishes in forced-colors mode, so the
+status colour never carries the meaning by itself. Light and dark are both
+defined from the same tokens rather than one being an automatic flip of the
+other.
 
 ## Data sources
 

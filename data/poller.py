@@ -8,7 +8,7 @@ import logging
 import time
 from typing import Sequence
 
-from data.cache import Cache
+from data.cache import Cache, Entry
 from data.sources.base import Source
 
 log = logging.getLogger("jarvis.poller")
@@ -40,7 +40,17 @@ class Poller:
             self.cache.record_failure(source.name, f"{type(e).__name__}: {e}", source.ttl)
             return False
 
-        self.cache.put(source.name, payload, source.ttl)
+        # Store the interval this payload will actually be refreshed at, not the
+        # source's floor. Sources pace dynamically — NBA polls every 60s during a
+        # game and every 6h otherwise — so writing the 60s floor marks an idle
+        # source stale a minute after a perfectly good fetch. Staleness has to
+        # mean "older than we meant to let it get", or it fires constantly and
+        # stops meaning anything.
+        provisional = Entry(
+            source=source.name, payload=payload, fetched_at=time.time(),
+            ttl=source.ttl, last_error=None, last_error_at=None,
+        )
+        self.cache.put(source.name, payload, source.interval(provisional))
         log.info("%s refreshed", source.name)
         return True
 
