@@ -5,6 +5,7 @@ weather situation where being 15 minutes stale actually matters.
 """
 from typing import Any
 
+from config.settings import TIMEZONE
 from data.cache import Entry
 from data.sources.base import Source
 from integrations import weather
@@ -19,13 +20,24 @@ class WeatherSource(Source):
     daily_budget = None
 
     def fetch(self) -> dict[str, Any]:
-        lat, lon = weather.location()
-        snapshot = weather.forecast(lat, lon)
+        here = weather.location()
+        snapshot = weather.forecast(here.lat, here.lon)
         # Alerts are US-only and return [] elsewhere, so a failure here is real
         # and worth surfacing rather than swallowing.
-        snapshot["alerts"] = weather.alerts(lat, lon)
+        snapshot["alerts"] = weather.alerts(here.lat, here.lon)
         snapshot["advice"] = weather.advice(snapshot, snapshot["alerts"])
-        snapshot["location"] = {"lat": lat, "lon": lon}
+        snapshot["location"] = {
+            "lat": here.lat,
+            "lon": here.lon,
+            "source": here.source,
+            "place": here.place,
+            "detected_tz": here.detected_tz,
+        }
+        # A guessed location and a configured timezone that disagree is always a
+        # misconfiguration — it means the coordinates are wrong, the clock is
+        # wrong, or both.
+        if here.is_guess and here.detected_tz and here.detected_tz != TIMEZONE:
+            snapshot["location"]["tz_mismatch"] = f"{here.detected_tz} vs configured {TIMEZONE}"
         return snapshot
 
     def interval(self, last: Entry | None) -> float:

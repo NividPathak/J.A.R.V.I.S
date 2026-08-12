@@ -138,6 +138,16 @@ class BriefingComposer:
                 stale.append((entry.source, entry.age or 0))
 
         warnings = []
+
+        # A guessed location, and a timezone that disagrees with it, are both
+        # silent-wrong-answer conditions rather than outages — worth saying out
+        # loud precisely because nothing else looks broken.
+        weather = self.cache.get("weather")
+        loc = (weather.payload or {}).get("location", {}) if weather else {}
+        if loc.get("tz_mismatch"):
+            warnings.append(f"location/timezone mismatch ({loc['tz_mismatch']}) — set JARVIS_LAT/LON")
+        elif loc.get("source") == "ip" and loc.get("place"):
+            warnings.append(f"weather is for {loc['place']}, guessed from your network")
         if missing:
             warnings.append(f"no data for {', '.join(sorted(missing))}")
         if stale:

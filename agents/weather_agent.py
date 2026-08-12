@@ -59,9 +59,16 @@ class WeatherAgent(CachedAgent):
 
         p = entry.payload
         now, days = p["now"], p.get("days") or []
+        loc = p.get("location") or {}
         lines: list[str] = []
 
-        # Advisories first — the whole point of a briefing is being told the
+        # Name the place whenever it was guessed. IP geolocation resolves the
+        # network, not the person — this reported Boulder for a machine on a
+        # university network and read as a perfectly ordinary forecast.
+        if loc.get("source") == "ip" and loc.get("place"):
+            lines.append(f"Weather for {loc['place']} (location guessed from your network).")
+
+        # Advisories next — the whole point of a briefing is being told the
         # thing you'd want to know before leaving the house.
         for alert in p.get("alerts") or []:
             lines.append(f"{alert['event']} in effect.")

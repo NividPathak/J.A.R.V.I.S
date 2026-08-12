@@ -6,6 +6,7 @@ warnings — the thing worth being told before leaving the house. NWS is US-only
 so outside the US the forecast still works and alerts come back empty rather
 than erroring.
 """
+from dataclasses import dataclass
 from typing import Any
 
 import requests
@@ -33,27 +34,57 @@ WMO = {
     95: "thunderstorms", 96: "thunderstorms with hail", 99: "severe thunderstorms",
 }
 
-_located: tuple[float, float] | None = None
+@dataclass(frozen=True)
+class Location:
+    lat: float
+    lon: float
+    #: "configured" when it came from JARVIS_LAT/JARVIS_LON, "ip" when guessed.
+    source: str
+    place: str = ""
+    #: Timezone implied by the coordinates, for cross-checking against JARVIS_TZ.
+    detected_tz: str = ""
+
+    @property
+    def is_guess(self) -> bool:
+        return self.source != "configured"
 
 
-def location() -> tuple[float, float]:
-    """Configured coordinates, else geolocate by IP once and remember it."""
+_located: Location | None = None
+
+
+def location() -> Location:
+    """Configured coordinates, else geolocate by IP once and remember it.
+
+    An IP guess carries the place name it resolved to, because the failure mode
+    here is silent and confident: geolocation resolves the *network*, not the
+    person. This reported Boulder weather for a machine on a university network
+    with no indication anything was wrong. Callers surface `place` whenever
+    `is_guess`, so a wrong location announces itself rather than reading as a
+    plain forecast.
+    """
     global _located
     if HOME_LAT and HOME_LON:
-        return HOME_LAT, HOME_LON
+        return Location(HOME_LAT, HOME_LON, source="configured")
     if _located is None:
         r = requests.get(GEOLOCATE, timeout=TIMEOUT)
         r.raise_for_status()
         d = r.json()
         if d.get("status") != "success":
             raise RuntimeError("Could not determine location; set JARVIS_LAT/JARVIS_LON")
-        _located = (float(d["lat"]), float(d["lon"]))
+        _located = Location(
+            lat=float(d["lat"]),
+            lon=float(d["lon"]),
+            source="ip",
+            place=", ".join(filter(None, (d.get("city"), d.get("regionName")))),
+            detected_tz=d.get("timezone", ""),
+        )
     return _located
 
 
 def forecast(lat: float | None = None, lon: float | None = None) -> dict[str, Any]:
     if lat is None or lon is None:
-        lat, lon = location()
+        here = location()
+        lat, lon = here.lat, here.lon
     r = requests.get(OPEN_METEO, params={
         "latitude": lat, "longitude": lon,
         "current": "temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m",
@@ -91,7 +122,8 @@ def forecast(lat: float | None = None, lon: float | None = None) -> dict[str, An
 def alerts(lat: float | None = None, lon: float | None = None) -> list[dict[str, Any]]:
     """Active NWS advisories. Empty outside the US rather than an error."""
     if lat is None or lon is None:
-        lat, lon = location()
+        here = location()
+        lat, lon = here.lat, here.lon
     r = requests.get(
         NWS_ALERTS, params={"point": f"{lat},{lon}"}, headers=NWS_HEADERS, timeout=TIMEOUT
     )
