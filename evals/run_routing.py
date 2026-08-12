@@ -32,7 +32,7 @@ from core.router.base import CONFIDENCE_FLOOR, Intent  # noqa: E402
 from core.router.llm_router import LLMRouter  # noqa: E402
 
 console = Console()
-DATASET = Path(__file__).parent / "routing" / "dataset.jsonl"
+DATASET = Path(__file__).parent / "routing" / "test.jsonl"
 
 
 def load(path: Path = DATASET, tag: str | None = None, limit: int | None = None) -> list[dict]:
@@ -187,6 +187,9 @@ def compare(current: dict, path: Path) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Routing eval")
+    ap.add_argument("--router", default="llm", choices=("llm", "tuned"),
+                    help="which router implementation to evaluate")
+    ap.add_argument("--adapter", help="LoRA adapter path (tuned router only)")
     ap.add_argument("--provider", help="ollama | anthropic (default: from settings)")
     ap.add_argument("--model", help="override model id")
     ap.add_argument("--tag", help="evaluate a single slice")
@@ -200,9 +203,17 @@ def main() -> int:
         console.print("[red]No examples matched.[/]")
         return 1
 
-    from core.llm import get_llm
+    if args.router == "tuned":
+        from core.router.tuned_router import DEFAULT_ADAPTER, DEFAULT_MODEL, TunedRouter
 
-    router = LLMRouter(get_llm(provider=args.provider, model=args.model))
+        router = TunedRouter(
+            model=args.model or DEFAULT_MODEL,
+            adapter_path=args.adapter or DEFAULT_ADAPTER,
+        )
+    else:
+        from core.llm import get_llm
+
+        router = LLMRouter(get_llm(provider=args.provider, model=args.model))
     console.print(f"[dim]Evaluating {router.name} over {len(rows)} examples...[/]")
 
     metrics = evaluate(router, rows)

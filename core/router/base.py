@@ -47,6 +47,14 @@ AGENT_FOR: dict[Intent, str | None] = {
 #: worse than a clarifying question once input is voice.
 CONFIDENCE_FLOOR = 0.55
 
+#: The fine-tuned router's prompt. Defined here so `training/prepare_data.py`
+#: and `TunedRouter` import the same string — if the training and inference
+#: prompts drift apart, accuracy degrades silently and no test catches it.
+TUNED_SYSTEM = (
+    "Classify the request into labels: calendar, weather, sports, news, "
+    "smalltalk, system. Reply with a comma-separated list, or none."
+)
+
 
 @dataclass(frozen=True)
 class Route:

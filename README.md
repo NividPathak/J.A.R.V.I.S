@@ -55,8 +55,8 @@ blanking the page.
 | 1 | Orchestrator, router interface, routing eval set | Done |
 | 2 | Subagents: calendar, weather, news/sports | Done |
 | 3 | Morning briefing (pre-computed, pushed) | Done |
-| 4 | Fine-tuned router (LoRA on `llama3.2:3b`) | Next |
-| 5 | Live sports dashboard | Planned |
+| 4 | Fine-tuned router (LoRA on `llama3.2:3b`) | Done |
+| 5 | Live sports dashboard | Next |
 | 6 | Voice (Whisper → orchestrator → TTS) | Planned |
 
 ---
@@ -161,36 +161,56 @@ calendar, weather and news at once — that request *is* the morning briefing.
 `Router` is a two-method protocol so the Phase 4 fine-tuned model drops in
 without a caller changing.
 
-### Baseline — `llama3.1:8b`, 94 examples
+### Results — fine-tuned 3B vs the 8B baseline
 
-| Metric | |
-|---|---|
-| Exact set match | **86.2%** |
-| Macro-F1 | 0.885 |
-| Latency | 857ms mean / 987ms p95 |
+Measured on 94 held-out examples the fine-tune never saw. `prepare_data.py`
+fails the build on any train/test collision, because training on your eval set
+is both fatal and silent.
 
-| Slice | Exact match |
-|---|---|
-| core | 94.9% |
-| negative (should abstain) | 83.3% |
-| multi (compound requests) | 78.6% |
-| voice (spoken phrasing) | 62.5% |
-| ambiguous | 57.1% |
+| | Baseline `llama3.1:8b` | Fine-tuned `llama3.2:3b` | |
+|---|---|---|---|
+| Exact set match | 86.2% | **91.5%** | +5.3pp |
+| Macro-F1 | 0.885 | **0.947** | +7.0% |
+| Latency | 857ms | **372ms** | **2.3× faster** |
+
+A 3B model beating an 8B at less than half the latency, off a 14MB LoRA adapter
+trained in ~7 minutes on an M4.
+
+| Slice | Baseline | Tuned |
+|---|---|---|
+| negative (should abstain) | 83.3% | **100%** |
+| voice (spoken phrasing) | 62.5% | **100%** |
+| core | 94.9% | 96.6% |
+| multi (compound requests) | 78.6% | 78.6% |
+| ambiguous | 57.1% | 57.1% |
 
 Exact set match is the headline: a route counts only if it predicts *precisely*
 the right label set. Partial credit would flatter the multi-intent slice, which
-is the one that decides whether a 3B model is usable here.
+is the one that decides whether a 3B is usable at all.
 
-**Known weakness — calibration.** 93 of 94 predictions land above the confidence
-floor, so abstention almost never fires and ~13 routes are confidently wrong.
-An LLM asked to self-report confidence mostly says 0.85–0.95 regardless of
-whether it's right. Real softmax probabilities from a fine-tuned classifier are
-the fix, and making abstention actionable is a large part of Phase 4's value.
+**Read the small slices with care.** `voice` is n=8 and `ambiguous` n=7, so a
+single example moves them ~14pp. Only the overall figure and `core` (n=59) carry
+enough weight to be trusted on their own.
+
+**Multi-label needed deliberate over-weighting.** The first fine-tune scored
+64.3% on `multi` — worse than the baseline — because only 40 of 256 training
+examples were compound and the model defaulted to emitting one label. Raising
+that to 97 of 319 recovered it to 78.6% with no loss elsewhere. Matching the
+real-world distribution was the wrong instinct; hard cases need over-representing.
+
+**Calibration improved less than hoped.** Confidence is the geometric mean of
+generated-token probabilities — a real property of the model's distribution
+rather than a self-reported number. Confident predictions are right 92.4% of the
+time against 50% for unsure ones, so the signal is directional, but only 2 of 94
+predictions fall below the floor. Abstention still rarely fires. The encouraging
+case is "tell me a joke" at 0.20 — correctly uncertain on a genuinely ambiguous
+label — but n=2 is too small to claim the win.
 
 ```bash
-python evals/run_routing.py                              # full set
-python evals/run_routing.py --tag voice                  # one slice
-python evals/run_routing.py --compare evals/results/llm-llama31-8b-v2.json
+./training/train.sh                                       # reproduce end to end
+python evals/run_routing.py --router tuned                # evaluate
+python evals/run_routing.py --router tuned --compare evals/results/llm-llama31-8b-v2.json
+JARVIS_ROUTER=tuned python main.py "brief me"             # use it
 ```
 
 ## Quick start

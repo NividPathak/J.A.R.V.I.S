@@ -27,11 +27,12 @@ env/
 .ruff_cache/
 .mypy_cache/
 
-# Model artifacts — LoRA adapters and checkpoints are large
+# Model artifacts. The final LoRA adapter is ~14MB and worth committing — it's
+# the deliverable. The numbered checkpoints it passed through are not.
 models/
 *.gguf
-*.safetensors
 checkpoints/
+training/adapters/[0-9]*_adapters.safetensors
 
 # macOS
 .DS_Store

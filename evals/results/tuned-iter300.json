@@ -1,0 +1,1309 @@
+{
+  "router": "tuned:Llama-3.2-3B-Instruct-4bit",
+  "n": 94,
+  "exact_match": 0.9042553191489362,
+  "macro_f1": 0.9492300793968192,
+  "per_intent": {
+    "calendar": [
+      1.0,
+      0.896551724137931,
+      0.9454545454545454
+    ],
+    "weather": [
+      1.0,
+      0.8275862068965517,
+      0.9056603773584906
+    ],
+    "sports": [
+      1.0,
+      0.9545454545454546,
+      0.9767441860465117
+    ],
+    "news": [
+      1.0,
+      0.8947368421052632,
+      0.9444444444444444
+    ],
+    "smalltalk": [
+      1.0,
+      0.8571428571428571,
+      0.923076923076923
+    ],
+    "system": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "by_tag": {
+    "ambiguous": {
+      "n": 7,
+      "accuracy": 0.7142857142857143
+    },
+    "core": {
+      "n": 59,
+      "accuracy": 0.9830508474576272
+    },
+    "multi": {
+      "n": 14,
+      "accuracy": 0.6428571428571429
+    },
+    "negative": {
+      "n": 6,
+      "accuracy": 1.0
+    },
+    "voice": {
+      "n": 8,
+      "accuracy": 0.875
+    }
+  },
+  "latency_ms": {
+    "mean": 367.2804362388288,
+    "p95": 405.019709141925
+  },
+  "calibration": {
+    "confident_n": 93,
+    "confident_accuracy": 0.9032258064516129,
+    "unsure_n": 1,
+    "unsure_accuracy": 1.0
+  },
+  "results": [
+    {
+      "utterance": "what's on my calendar tomorrow",
+      "tag": "core",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 559.5790420193225
+    },
+    {
+      "utterance": "am I free thursday afternoon",
+      "tag": "core",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 355.59820802882314
+    },
+    {
+      "utterance": "when's my next meeting",
+      "tag": "core",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 356.42045782878995
+    },
+    {
+      "utterance": "schedule a call with priya for friday at 2",
+      "tag": "core",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 360.69912486709654
+    },
+    {
+      "utterance": "do I have anything before noon",
+      "tag": "core",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 347.95337496325374
+    },
+    {
+      "utterance": "move my 3pm to 4",
+      "tag": "core",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 342.4919170793146
+    },
+    {
+      "utterance": "how many meetings do I have this week",
+      "tag": "core",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 330.75379207730293
+    },
+    {
+      "utterance": "cancel my standup tomorrow",
+      "tag": "core",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 0.9616906016054253,
+      "latency_ms": 364.93512499146163
+    },
+    {
+      "utterance": "block two hours for deep work on wednesday",
+      "tag": "core",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 343.5873750131577
+    },
+    {
+      "utterance": "what time does my interview start",
+      "tag": "core",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 344.2427080590278
+    },
+    {
+      "utterance": "is my afternoon clear",
+      "tag": "core",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 0.9922179382602435,
+      "latency_ms": 351.0040419641882
+    },
+    {
+      "utterance": "add a dentist appointment next tuesday morning",
+      "tag": "core",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 351.72279202379286
+    },
+    {
+      "utterance": "what's the weather like",
+      "tag": "core",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 356.89787520095706
+    },
+    {
+      "utterance": "is it going to rain today",
+      "tag": "core",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 350.95775010995567
+    },
+    {
+      "utterance": "how hot is it outside",
+      "tag": "core",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 356.67712497524917
+    },
+    {
+      "utterance": "do I need an umbrella this afternoon",
+      "tag": "core",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 0.976835024950062,
+      "latency_ms": 359.88300014287233
+    },
+    {
+      "utterance": "any heat advisory today",
+      "tag": "core",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 355.1060000900179
+    },
+    {
+      "utterance": "what's the forecast for the weekend",
+      "tag": "core",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 351.7146250233054
+    },
+    {
+      "utterance": "should I wear a jacket",
+      "tag": "core",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 0.9922179382602435,
+      "latency_ms": 351.7213328741491
+    },
+    {
+      "utterance": "is there a storm warning",
+      "tag": "core",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 343.3456670027226
+    },
+    {
+      "utterance": "how cold is it going to get tonight",
+      "tag": "core",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 356.9987500086427
+    },
+    {
+      "utterance": "what's the uv index",
+      "tag": "core",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 349.89758394658566
+    },
+    {
+      "utterance": "is it humid out",
+      "tag": "core",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 354.41783303394914
+    },
+    {
+      "utterance": "any air quality warnings",
+      "tag": "core",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 361.6111660376191
+    },
+    {
+      "utterance": "did the lakers win last night",
+      "tag": "core",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 352.0519998855889
+    },
+    {
+      "utterance": "what's the nba score",
+      "tag": "core",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 354.18829205445945
+    },
+    {
+      "utterance": "who's playing in the nfl today",
+      "tag": "core",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 349.5192499831319
+    },
+    {
+      "utterance": "when is the next f1 race",
+      "tag": "core",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 0.976835024950062,
+      "latency_ms": 356.843207962811
+    },
+    {
+      "utterance": "how did india do in the test match",
+      "tag": "core",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 354.178125038743
+    },
+    {
+      "utterance": "show me the eastern conference standings",
+      "tag": "core",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 356.9978750310838
+    },
+    {
+      "utterance": "who won the dutch grand prix",
+      "tag": "core",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 354.5706660952419
+    },
+    {
+      "utterance": "is the celtics game on tonight",
+      "tag": "core",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 351.2830000836402
+    },
+    {
+      "utterance": "what's the score in the chiefs game",
+      "tag": "core",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 348.51283300668
+    },
+    {
+      "utterance": "give me the cricket results",
+      "tag": "core",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 365.38583296351135
+    },
+    {
+      "utterance": "who's leading the drivers championship",
+      "tag": "core",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 358.2813749089837
+    },
+    {
+      "utterance": "any nba games tonight",
+      "tag": "core",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 353.902209084481
+    },
+    {
+      "utterance": "what's in the news",
+      "tag": "core",
+      "expected": [
+        "news"
+      ],
+      "predicted": [
+        "news"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 350.82149994559586
+    },
+    {
+      "utterance": "give me today's headlines",
+      "tag": "core",
+      "expected": [
+        "news"
+      ],
+      "predicted": [
+        "news"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 348.17120898514986
+    },
+    {
+      "utterance": "anything happening in tech",
+      "tag": "core",
+      "expected": [
+        "news"
+      ],
+      "predicted": [
+        "news"
+      ],
+      "correct": true,
+      "confidence": 0.9616906016054253,
+      "latency_ms": 358.3387089893222
+    },
+    {
+      "utterance": "what's going on in the world",
+      "tag": "core",
+      "expected": [
+        "news"
+      ],
+      "predicted": [
+        "news"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 355.0758750643581
+    },
+    {
+      "utterance": "catch me up on the news",
+      "tag": "core",
+      "expected": [
+        "news"
+      ],
+      "predicted": [
+        "news"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 359.50166708789766
+    },
+    {
+      "utterance": "any big stories today",
+      "tag": "core",
+      "expected": [
+        "news"
+      ],
+      "predicted": [
+        "news"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 351.12566710449755
+    },
+    {
+      "utterance": "what's happening with the markets",
+      "tag": "core",
+      "expected": [
+        "news"
+      ],
+      "predicted": [
+        "news"
+      ],
+      "correct": true,
+      "confidence": 0.9692332344763441,
+      "latency_ms": 353.08370902203023
+    },
+    {
+      "utterance": "read me the top headlines",
+      "tag": "core",
+      "expected": [
+        "news"
+      ],
+      "predicted": [
+        "news"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 351.1473329272121
+    },
+    {
+      "utterance": "hey jarvis",
+      "tag": "core",
+      "expected": [
+        "smalltalk"
+      ],
+      "predicted": [
+        "smalltalk"
+      ],
+      "correct": true,
+      "confidence": 0.8464817248906141,
+      "latency_ms": 371.0265827830881
+    },
+    {
+      "utterance": "good morning",
+      "tag": "core",
+      "expected": [
+        "smalltalk"
+      ],
+      "predicted": [
+        "smalltalk"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 368.79804194904864
+    },
+    {
+      "utterance": "thanks",
+      "tag": "core",
+      "expected": [
+        "smalltalk"
+      ],
+      "predicted": [
+        "smalltalk"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 375.31033298000693
+    },
+    {
+      "utterance": "how are you doing today",
+      "tag": "core",
+      "expected": [
+        "smalltalk"
+      ],
+      "predicted": [
+        "smalltalk"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 371.56745814718306
+    },
+    {
+      "utterance": "you're doing great",
+      "tag": "core",
+      "expected": [
+        "smalltalk"
+      ],
+      "predicted": [
+        "smalltalk"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 379.32795914821327
+    },
+    {
+      "utterance": "goodnight jarvis",
+      "tag": "core",
+      "expected": [
+        "smalltalk"
+      ],
+      "predicted": [
+        "smalltalk"
+      ],
+      "correct": true,
+      "confidence": 0.9948052065178371,
+      "latency_ms": 368.84566699154675
+    },
+    {
+      "utterance": "tell me a joke",
+      "tag": "core",
+      "expected": [
+        "smalltalk"
+      ],
+      "predicted": [],
+      "correct": false,
+      "confidence": 0.556583819812148,
+      "latency_ms": 349.2655830923468
+    },
+    {
+      "utterance": "what can you do",
+      "tag": "core",
+      "expected": [
+        "system"
+      ],
+      "predicted": [
+        "system"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 357.6620831154287
+    },
+    {
+      "utterance": "what are your capabilities",
+      "tag": "core",
+      "expected": [
+        "system"
+      ],
+      "predicted": [
+        "system"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 348.47120800986886
+    },
+    {
+      "utterance": "say that again",
+      "tag": "core",
+      "expected": [
+        "system"
+      ],
+      "predicted": [
+        "system"
+      ],
+      "correct": true,
+      "confidence": 0.9467809707821289,
+      "latency_ms": 341.80024988017976
+    },
+    {
+      "utterance": "stop",
+      "tag": "core",
+      "expected": [
+        "system"
+      ],
+      "predicted": [
+        "system"
+      ],
+      "correct": true,
+      "confidence": 0.9922179382602435,
+      "latency_ms": 355.35966604948044
+    },
+    {
+      "utterance": "never mind cancel that",
+      "tag": "core",
+      "expected": [
+        "system"
+      ],
+      "predicted": [
+        "system"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 351.0216251015663
+    },
+    {
+      "utterance": "speak a bit slower",
+      "tag": "core",
+      "expected": [
+        "system"
+      ],
+      "predicted": [
+        "system"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 347.7652498986572
+    },
+    {
+      "utterance": "switch to the local model",
+      "tag": "core",
+      "expected": [
+        "system"
+      ],
+      "predicted": [
+        "system"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 353.10999979265034
+    },
+    {
+      "utterance": "how do I add a new subagent",
+      "tag": "core",
+      "expected": [
+        "system"
+      ],
+      "predicted": [
+        "system"
+      ],
+      "correct": true,
+      "confidence": 0.9692332344763441,
+      "latency_ms": 352.6021249126643
+    },
+    {
+      "utterance": "what does my day look like",
+      "tag": "multi",
+      "expected": [
+        "calendar",
+        "news",
+        "weather"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": false,
+      "confidence": 0.8963942066351505,
+      "latency_ms": 353.13008306548
+    },
+    {
+      "utterance": "give me the morning rundown",
+      "tag": "multi",
+      "expected": [
+        "calendar",
+        "news",
+        "weather"
+      ],
+      "predicted": [
+        "calendar",
+        "news",
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 0.9591894571091382,
+      "latency_ms": 438.17220791243017
+    },
+    {
+      "utterance": "brief me",
+      "tag": "multi",
+      "expected": [
+        "calendar",
+        "news",
+        "weather"
+      ],
+      "predicted": [
+        "calendar",
+        "news",
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 0.9870635709816842,
+      "latency_ms": 441.3168749306351
+    },
+    {
+      "utterance": "catch me up on everything",
+      "tag": "multi",
+      "expected": [
+        "calendar",
+        "news",
+        "weather"
+      ],
+      "predicted": [
+        "news"
+      ],
+      "correct": false,
+      "confidence": 0.976835024950062,
+      "latency_ms": 358.13154210336506
+    },
+    {
+      "utterance": "should I bring a jacket to my 3pm",
+      "tag": "multi",
+      "expected": [
+        "calendar",
+        "weather"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": false,
+      "confidence": 0.8420844271433824,
+      "latency_ms": 357.3925830423832
+    },
+    {
+      "utterance": "is the weather going to mess up my commute to the office meeting",
+      "tag": "multi",
+      "expected": [
+        "calendar",
+        "weather"
+      ],
+      "predicted": [
+        "calendar",
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 0.9961013694701175,
+      "latency_ms": 397.3228340037167
+    },
+    {
+      "utterance": "do I need to leave earlier tomorrow given the rain",
+      "tag": "multi",
+      "expected": [
+        "calendar",
+        "weather"
+      ],
+      "predicted": [
+        "calendar",
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 0.9806582491395386,
+      "latency_ms": 402.4902500677854
+    },
+    {
+      "utterance": "any news and scores from overnight",
+      "tag": "multi",
+      "expected": [
+        "news",
+        "sports"
+      ],
+      "predicted": [
+        "news",
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 394.1877919714898
+    },
+    {
+      "utterance": "what did I miss this morning, headlines and games",
+      "tag": "multi",
+      "expected": [
+        "news",
+        "sports"
+      ],
+      "predicted": [
+        "news",
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 0.9883496471138451,
+      "latency_ms": 405.019709141925
+    },
+    {
+      "utterance": "weather and scores please",
+      "tag": "multi",
+      "expected": [
+        "sports",
+        "weather"
+      ],
+      "predicted": [
+        "sports",
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 0.8193706364007008,
+      "latency_ms": 396.08400012366474
+    },
+    {
+      "utterance": "will the rain affect the game tonight",
+      "tag": "multi",
+      "expected": [
+        "sports",
+        "weather"
+      ],
+      "predicted": [
+        "sports",
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 0.9504865667294234,
+      "latency_ms": 404.22387490980327
+    },
+    {
+      "utterance": "am I free to watch the f1 race sunday",
+      "tag": "multi",
+      "expected": [
+        "calendar",
+        "sports"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": false,
+      "confidence": 0.9542066659691884,
+      "latency_ms": 364.1902080271393
+    },
+    {
+      "utterance": "do I have anything during the nba game tonight",
+      "tag": "multi",
+      "expected": [
+        "calendar",
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": false,
+      "confidence": 0.8290291181804004,
+      "latency_ms": 358.7017918471247
+    },
+    {
+      "utterance": "give me the weather and my first meeting",
+      "tag": "multi",
+      "expected": [
+        "calendar",
+        "weather"
+      ],
+      "predicted": [
+        "calendar",
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 0.9961013694701175,
+      "latency_ms": 399.2894170805812
+    },
+    {
+      "utterance": "hey jarvis what's the weather looking like",
+      "tag": "voice",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 353.2719169743359
+    },
+    {
+      "utterance": "uh jarvis when's my next meeting again",
+      "tag": "voice",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 352.37841703929007
+    },
+    {
+      "utterance": "jarvis did the game finish",
+      "tag": "voice",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 0.9692332344763441,
+      "latency_ms": 359.3452500645071
+    },
+    {
+      "utterance": "ok so um what's on today",
+      "tag": "voice",
+      "expected": [
+        "calendar"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": true,
+      "confidence": 0.7259221509524082,
+      "latency_ms": 353.0623340047896
+    },
+    {
+      "utterance": "hey can you tell me the headlines real quick",
+      "tag": "voice",
+      "expected": [
+        "news"
+      ],
+      "predicted": [
+        "news"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 351.3192920945585
+    },
+    {
+      "utterance": "jarvis give me the rundown for today please",
+      "tag": "voice",
+      "expected": [
+        "calendar",
+        "news",
+        "weather"
+      ],
+      "predicted": [
+        "calendar",
+        "news"
+      ],
+      "correct": false,
+      "confidence": 0.8035225736890608,
+      "latency_ms": 399.0258751437068
+    },
+    {
+      "utterance": "wait what was that score again",
+      "tag": "voice",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 354.1385419666767
+    },
+    {
+      "utterance": "yeah so is it gonna rain later or not",
+      "tag": "voice",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 351.7597911413759
+    },
+    {
+      "utterance": "what's happening today",
+      "tag": "ambiguous",
+      "expected": [
+        "calendar",
+        "news"
+      ],
+      "predicted": [
+        "calendar"
+      ],
+      "correct": false,
+      "confidence": 0.9321024923595276,
+      "latency_ms": 360.0148339755833
+    },
+    {
+      "utterance": "anything I should know about",
+      "tag": "ambiguous",
+      "expected": [
+        "calendar",
+        "news",
+        "weather"
+      ],
+      "predicted": [
+        "news"
+      ],
+      "correct": false,
+      "confidence": 0.8420844271433824,
+      "latency_ms": 350.7822921965271
+    },
+    {
+      "utterance": "how's it looking out there",
+      "tag": "ambiguous",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 350.67112487740815
+    },
+    {
+      "utterance": "what's the score",
+      "tag": "ambiguous",
+      "expected": [
+        "sports"
+      ],
+      "predicted": [
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 344.6704999078065
+    },
+    {
+      "utterance": "update me",
+      "tag": "ambiguous",
+      "expected": [
+        "calendar",
+        "news",
+        "weather"
+      ],
+      "predicted": [
+        "calendar",
+        "news",
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 0.9200444146293233,
+      "latency_ms": 451.4257500413805
+    },
+    {
+      "utterance": "is it worth going outside",
+      "tag": "ambiguous",
+      "expected": [
+        "weather"
+      ],
+      "predicted": [
+        "weather"
+      ],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 354.22375006601214
+    },
+    {
+      "utterance": "anything on tonight",
+      "tag": "ambiguous",
+      "expected": [
+        "calendar",
+        "sports"
+      ],
+      "predicted": [
+        "calendar",
+        "sports"
+      ],
+      "correct": true,
+      "confidence": 0.9542066659691884,
+      "latency_ms": 390.00729215331376
+    },
+    {
+      "utterance": "sdfkjhsdf",
+      "tag": "negative",
+      "expected": [],
+      "predicted": [],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 355.12583306990564
+    },
+    {
+      "utterance": "write me a python function to reverse a list",
+      "tag": "negative",
+      "expected": [],
+      "predicted": [],
+      "correct": true,
+      "confidence": 0.2,
+      "latency_ms": 665.3949581086636
+    },
+    {
+      "utterance": "what's the capital of mongolia",
+      "tag": "negative",
+      "expected": [],
+      "predicted": [],
+      "correct": true,
+      "confidence": 0.9922179382602435,
+      "latency_ms": 352.3175420705229
+    },
+    {
+      "utterance": "order me a pizza",
+      "tag": "negative",
+      "expected": [],
+      "predicted": [],
+      "correct": true,
+      "confidence": 1.0,
+      "latency_ms": 356.2660419847816
+    },
+    {
+      "utterance": "book a flight to tokyo",
+      "tag": "negative",
+      "expected": [],
+      "predicted": [],
+      "correct": true,
+      "confidence": 0.9394130628134758,
+      "latency_ms": 356.3781250268221
+    },
+    {
+      "utterance": "translate this to spanish",
+      "tag": "negative",
+      "expected": [],
+      "predicted": [],
+      "correct": true,
+      "confidence": 0.9616906016054253,
+      "latency_ms": 359.9975418765098
+    }
+  ]
+}

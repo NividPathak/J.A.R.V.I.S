@@ -1,0 +1,63 @@
+{"utterance": "how's my day and is it going to rain", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "check the forecast and my first appointment", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "do I need boots for my walk to class", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "is the snow going to delay anything I have booked", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "tell me the weather then my meetings", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "what am I doing today and how warm will it be", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "any outdoor plans I should worry about with this heat", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "will the storm hit before my evening class", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "schedule and conditions please", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "is it warm enough to walk to my appointment", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "give me the scores and the top stories", "intents": ["news", "sports"], "tag": "multi"}
+{"utterance": "sports and world news please", "intents": ["news", "sports"], "tag": "multi"}
+{"utterance": "what happened in the world and on the field", "intents": ["news", "sports"], "tag": "multi"}
+{"utterance": "anything from the papers or the leagues", "intents": ["news", "sports"], "tag": "multi"}
+{"utterance": "headlines then results", "intents": ["news", "sports"], "tag": "multi"}
+{"utterance": "did I miss any news or games", "intents": ["news", "sports"], "tag": "multi"}
+{"utterance": "recap the day in news and sport", "intents": ["news", "sports"], "tag": "multi"}
+{"utterance": "am I free during the match tonight", "intents": ["calendar", "sports"], "tag": "multi"}
+{"utterance": "does anything clash with the game", "intents": ["calendar", "sports"], "tag": "multi"}
+{"utterance": "put the race in my calendar if I'm not busy", "intents": ["calendar", "sports"], "tag": "multi"}
+{"utterance": "when's the game and am I working then", "intents": ["calendar", "sports"], "tag": "multi"}
+{"utterance": "can I make kickoff with my schedule", "intents": ["calendar", "sports"], "tag": "multi"}
+{"utterance": "my meetings and whether the nuggets played", "intents": ["calendar", "sports"], "tag": "multi"}
+{"utterance": "is there a fixture tonight and do I have anything", "intents": ["calendar", "sports"], "tag": "multi"}
+{"utterance": "will rain stop play today", "intents": ["sports", "weather"], "tag": "multi"}
+{"utterance": "conditions for the race this weekend", "intents": ["sports", "weather"], "tag": "multi"}
+{"utterance": "is the game likely to be postponed for weather", "intents": ["sports", "weather"], "tag": "multi"}
+{"utterance": "should I dress warm for the stadium tonight", "intents": ["sports", "weather"], "tag": "multi"}
+{"utterance": "forecast and the scores", "intents": ["sports", "weather"], "tag": "multi"}
+{"utterance": "what's the news and is it raining", "intents": ["news", "weather"], "tag": "multi"}
+{"utterance": "headlines and the forecast", "intents": ["news", "weather"], "tag": "multi"}
+{"utterance": "anything happening and what's it like outside", "intents": ["news", "weather"], "tag": "multi"}
+{"utterance": "top stories plus the temperature", "intents": ["news", "weather"], "tag": "multi"}
+{"utterance": "is there a heatwave in the news", "intents": ["news", "weather"], "tag": "multi"}
+{"utterance": "my schedule and the headlines", "intents": ["calendar", "news"], "tag": "multi"}
+{"utterance": "what's on today and what's happening in the world", "intents": ["calendar", "news"], "tag": "multi"}
+{"utterance": "meetings plus anything I should read", "intents": ["calendar", "news"], "tag": "multi"}
+{"utterance": "am I busy and did anything break overnight", "intents": ["calendar", "news"], "tag": "multi"}
+{"utterance": "the usual please", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "set me up for the day", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "everything I should know right now", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "morning summary", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "daily digest", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "walk me through the morning", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "weather calendar and news", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "prep me for today", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "what's my day looking like overall", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "the whole picture please", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "bring me up to speed", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "rundown", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "my schedule the weather and any scores", "intents": ["calendar", "sports", "weather"], "tag": "multi"}
+{"utterance": "am I free is it raining and who won", "intents": ["calendar", "sports", "weather"], "tag": "multi"}
+{"utterance": "give me calendar forecast and results", "intents": ["calendar", "sports", "weather"], "tag": "multi"}
+{"utterance": "news scores and the forecast", "intents": ["news", "sports", "weather"], "tag": "multi"}
+{"utterance": "what's happening in the world in sport and outside", "intents": ["news", "sports", "weather"], "tag": "multi"}
+{"utterance": "headlines results and my meetings", "intents": ["calendar", "news", "sports"], "tag": "multi"}
+{"utterance": "catch me up on everything including the games", "intents": ["calendar", "news", "sports"], "tag": "multi"}
+{"utterance": "hey jarvis give me the full picture for today", "intents": ["calendar", "news", "weather"], "tag": "voice"}
+{"utterance": "jarvis weather and my schedule please", "intents": ["calendar", "weather"], "tag": "voice"}
+{"utterance": "hey jarvis any scores and what's the news", "intents": ["news", "sports"], "tag": "voice"}
+{"utterance": "so um is it raining and am I busy", "intents": ["calendar", "weather"], "tag": "voice"}
+{"utterance": "jarvis brief me on everything", "intents": ["calendar", "news", "weather"], "tag": "voice"}
+{"utterance": "hey can you tell me the weather and if the game is on", "intents": ["sports", "weather"], "tag": "voice"}

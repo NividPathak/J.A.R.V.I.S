@@ -1,0 +1,113 @@
+{"utterance": "give me the morning briefing", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "what do I need to know this morning", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "run me through today", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "start my day", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "everything I need before I head out", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "full rundown please", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "the usual morning update", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "brief me on the day ahead", "intents": ["calendar", "news", "weather"], "tag": "multi"}
+{"utterance": "do I need an umbrella for my meetings today", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "is the weather going to be a problem for my commute", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "what should I wear for my presentation this afternoon", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "should I leave early for my 9am given the snow", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "will it rain during my outdoor meeting", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "what's my schedule and is it going to be hot", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "weather and my first appointment please", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "can I bike to campus today given my schedule", "intents": ["calendar", "weather"], "tag": "multi"}
+{"utterance": "headlines and scores", "intents": ["news", "sports"], "tag": "multi"}
+{"utterance": "what happened overnight in news and sport", "intents": ["news", "sports"], "tag": "multi"}
+{"utterance": "catch me up on the world and the games", "intents": ["news", "sports"], "tag": "multi"}
+{"utterance": "anything big in the news or any results", "intents": ["news", "sports"], "tag": "multi"}
+{"utterance": "give me the stories and the scores", "intents": ["news", "sports"], "tag": "multi"}
+{"utterance": "is the weather going to affect the game tonight", "intents": ["sports", "weather"], "tag": "multi"}
+{"utterance": "will the race be wet", "intents": ["sports", "weather"], "tag": "multi"}
+{"utterance": "should I go to the stadium given the forecast", "intents": ["sports", "weather"], "tag": "multi"}
+{"utterance": "is it going to rain during the cricket", "intents": ["sports", "weather"], "tag": "multi"}
+{"utterance": "am I free when the nuggets play", "intents": ["calendar", "sports"], "tag": "multi"}
+{"utterance": "do I have anything clashing with the race sunday", "intents": ["calendar", "sports"], "tag": "multi"}
+{"utterance": "can I watch the game tonight or am I busy", "intents": ["calendar", "sports"], "tag": "multi"}
+{"utterance": "block time for the match if I'm free", "intents": ["calendar", "sports"], "tag": "multi"}
+{"utterance": "my schedule and any scores I missed", "intents": ["calendar", "sports"], "tag": "multi"}
+{"utterance": "weather plus the headlines", "intents": ["news", "weather"], "tag": "multi"}
+{"utterance": "is it raining and what's happening in the world", "intents": ["news", "weather"], "tag": "multi"}
+{"utterance": "forecast and top stories please", "intents": ["news", "weather"], "tag": "multi"}
+{"utterance": "any weather alerts and anything in the news about it", "intents": ["news", "weather"], "tag": "multi"}
+{"utterance": "what's my day like and did anything happen overnight", "intents": ["calendar", "news"], "tag": "multi"}
+{"utterance": "meetings and headlines", "intents": ["calendar", "news"], "tag": "multi"}
+{"utterance": "am I busy and what's in the news", "intents": ["calendar", "news"], "tag": "multi"}
+{"utterance": "give me my schedule the forecast and any scores", "intents": ["calendar", "sports", "weather"], "tag": "multi"}
+{"utterance": "weather scores and what's on today", "intents": ["calendar", "sports", "weather"], "tag": "multi"}
+{"utterance": "everything except the news", "intents": ["calendar", "sports", "weather"], "tag": "multi"}
+{"utterance": "hey jarvis what have I got on today", "intents": ["calendar"], "tag": "voice"}
+{"utterance": "jarvis is it going to rain", "intents": ["weather"], "tag": "voice"}
+{"utterance": "hey jarvis who won last night", "intents": ["sports"], "tag": "voice"}
+{"utterance": "um jarvis what's the news", "intents": ["news"], "tag": "voice"}
+{"utterance": "okay jarvis give me the briefing", "intents": ["calendar", "news", "weather"], "tag": "voice"}
+{"utterance": "so uh what's the weather doing", "intents": ["weather"], "tag": "voice"}
+{"utterance": "jarvis can you tell me my next meeting", "intents": ["calendar"], "tag": "voice"}
+{"utterance": "hey um is there a game tonight", "intents": ["sports"], "tag": "voice"}
+{"utterance": "alright jarvis what's happening today", "intents": ["calendar", "news"], "tag": "voice"}
+{"utterance": "hey jarvis do I need a coat", "intents": ["weather"], "tag": "voice"}
+{"utterance": "yeah so what's on my calendar", "intents": ["calendar"], "tag": "voice"}
+{"utterance": "jarvis quick what's the score", "intents": ["sports"], "tag": "voice"}
+{"utterance": "hey can you read me the headlines", "intents": ["news"], "tag": "voice"}
+{"utterance": "okay so um is it hot out", "intents": ["weather"], "tag": "voice"}
+{"utterance": "jarvis what time is my first thing", "intents": ["calendar"], "tag": "voice"}
+{"utterance": "hey jarvis how's it looking outside", "intents": ["weather"], "tag": "voice"}
+{"utterance": "uh what did the nuggets do", "intents": ["sports"], "tag": "voice"}
+{"utterance": "jarvis run me through the day would you", "intents": ["calendar", "news", "weather"], "tag": "voice"}
+{"utterance": "hey jarvis thanks that's great", "intents": ["smalltalk"], "tag": "voice"}
+{"utterance": "okay jarvis stop", "intents": ["system"], "tag": "voice"}
+{"utterance": "jarvis say that again", "intents": ["system"], "tag": "voice"}
+{"utterance": "hey jarvis are you there", "intents": ["smalltalk"], "tag": "voice"}
+{"utterance": "so what's the deal with tomorrow", "intents": ["calendar", "weather"], "tag": "voice"}
+{"utterance": "jarvis anything I should know", "intents": ["calendar", "news", "weather"], "tag": "voice"}
+{"utterance": "hey what's going on today", "intents": ["calendar", "news"], "tag": "voice"}
+{"utterance": "jarvis whats the forecast for later", "intents": ["weather"], "tag": "voice"}
+{"utterance": "um can you check my calendar", "intents": ["calendar"], "tag": "voice"}
+{"utterance": "hey jarvis any results from overnight", "intents": ["sports"], "tag": "voice"}
+{"utterance": "so is there anything on tonight", "intents": ["calendar", "sports"], "tag": "voice"}
+{"utterance": "jarvis whats new", "intents": ["news"], "tag": "voice"}
+{"utterance": "anything I need to prepare for", "intents": ["calendar"], "tag": "ambiguous"}
+{"utterance": "how's everything looking", "intents": ["calendar", "news", "weather"], "tag": "ambiguous"}
+{"utterance": "give me the important stuff", "intents": ["calendar", "news", "weather"], "tag": "ambiguous"}
+{"utterance": "what's the situation", "intents": ["calendar", "news", "weather"], "tag": "ambiguous"}
+{"utterance": "should I go outside", "intents": ["weather"], "tag": "ambiguous"}
+{"utterance": "anything happening tonight", "intents": ["calendar", "sports"], "tag": "ambiguous"}
+{"utterance": "how's it out there", "intents": ["weather"], "tag": "ambiguous"}
+{"utterance": "am I missing anything", "intents": ["calendar", "news"], "tag": "ambiguous"}
+{"utterance": "any results", "intents": ["sports"], "tag": "ambiguous"}
+{"utterance": "what's new", "intents": ["news"], "tag": "ambiguous"}
+{"utterance": "is today going to be busy", "intents": ["calendar"], "tag": "ambiguous"}
+{"utterance": "anything urgent", "intents": ["calendar", "news", "weather"], "tag": "ambiguous"}
+{"utterance": "fill me in", "intents": ["calendar", "news", "weather"], "tag": "ambiguous"}
+{"utterance": "what did I miss", "intents": ["news", "sports"], "tag": "ambiguous"}
+{"utterance": "how bad is it", "intents": ["weather"], "tag": "ambiguous"}
+{"utterance": "give me the numbers", "intents": ["sports"], "tag": "ambiguous"}
+{"utterance": "anything on", "intents": ["calendar", "sports"], "tag": "ambiguous"}
+{"utterance": "status update", "intents": ["calendar", "news", "weather"], "tag": "ambiguous"}
+{"utterance": "write a sql query to join two tables", "intents": [], "tag": "negative"}
+{"utterance": "what's 47 times 89", "intents": [], "tag": "negative"}
+{"utterance": "explain how photosynthesis works", "intents": [], "tag": "negative"}
+{"utterance": "send an email to my professor", "intents": [], "tag": "negative"}
+{"utterance": "play some music", "intents": [], "tag": "negative"}
+{"utterance": "set a timer for ten minutes", "intents": [], "tag": "negative"}
+{"utterance": "what's the meaning of life", "intents": [], "tag": "negative"}
+{"utterance": "convert 50 dollars to rupees", "intents": [], "tag": "negative"}
+{"utterance": "asdlkfjasdf", "intents": [], "tag": "negative"}
+{"utterance": "define entropy", "intents": [], "tag": "negative"}
+{"utterance": "help me debug this stack trace", "intents": [], "tag": "negative"}
+{"utterance": "who was the first president", "intents": [], "tag": "negative"}
+{"utterance": "call my mum", "intents": [], "tag": "negative"}
+{"utterance": "buy milk on amazon", "intents": [], "tag": "negative"}
+{"utterance": "turn on the living room lights", "intents": [], "tag": "negative"}
+{"utterance": "what's a good recipe for pasta", "intents": [], "tag": "negative"}
+{"utterance": "summarize this pdf for me", "intents": [], "tag": "negative"}
+{"utterance": "how do I get to the airport", "intents": [], "tag": "negative"}
+{"utterance": "qwertyuiop", "intents": [], "tag": "negative"}
+{"utterance": "tell me about quantum computing", "intents": [], "tag": "negative"}
+{"utterance": "book a table for two", "intents": [], "tag": "negative"}
+{"utterance": "what's my bank balance", "intents": [], "tag": "negative"}
+{"utterance": "translate good morning into french", "intents": [], "tag": "negative"}
+{"utterance": "generate an image of a cat", "intents": [], "tag": "negative"}
+{"utterance": "how tall is mount everest", "intents": [], "tag": "negative"}

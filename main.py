@@ -18,7 +18,7 @@ from rich.panel import Panel
 from agents.calendar_agent import CalendarAgent
 from agents.news_agent import NewsAgent
 from agents.weather_agent import WeatherAgent
-from config.settings import JARVIS_NAME, JARVIS_USER
+from config.settings import JARVIS_NAME, JARVIS_USER, ROUTER_BACKEND
 from core.llm import get_llm
 from core.orchestrator import Orchestrator, Response
 from core.router.llm_router import LLMRouter
@@ -26,10 +26,23 @@ from core.router.llm_router import LLMRouter
 console = Console()
 
 
-def build(provider: str | None = None, model: str | None = None) -> Orchestrator:
+def build_router(backend: str | None = None, llm=None):
+    """Pick the routing implementation. Both satisfy the same protocol, so
+    nothing downstream knows or cares which one is in place."""
+    backend = (backend or ROUTER_BACKEND).lower()
+    if backend == "tuned":
+        from core.router.tuned_router import TunedRouter
+
+        return TunedRouter()
+    return LLMRouter(llm)
+
+
+def build(
+    provider: str | None = None, model: str | None = None, router: str | None = None
+) -> Orchestrator:
     llm = get_llm(provider=provider, model=model)
     agents = {a.name: a for a in (CalendarAgent(llm=llm), WeatherAgent(llm=llm), NewsAgent(llm=llm))}
-    return Orchestrator(LLMRouter(llm), agents)
+    return Orchestrator(build_router(router, llm), agents)
 
 
 def show(response: Response, explain: bool = False) -> None:
@@ -75,6 +88,7 @@ def main() -> int:
     ap.add_argument("-e", "--explain", action="store_true", help="show the routing decision")
     ap.add_argument("--provider", help="ollama | anthropic")
     ap.add_argument("--model", help="override model id")
+    ap.add_argument("--router", choices=("llm", "tuned"), help="routing backend")
     ap.add_argument("-v", "--verbose", action="store_true")
     args = ap.parse_args()
 
@@ -84,7 +98,7 @@ def main() -> int:
         datefmt="%H:%M:%S",
     )
 
-    orchestrator = build(args.provider, args.model)
+    orchestrator = build(args.provider, args.model, args.router)
     if args.utterance:
         show(orchestrator.handle(" ".join(args.utterance)), args.explain)
         return 0

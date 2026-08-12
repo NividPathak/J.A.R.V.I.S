@@ -1,0 +1,143 @@
+{"utterance": "what meetings do I have tomorrow morning", "intents": ["calendar"], "tag": "core"}
+{"utterance": "put lunch with sam on the calendar for friday", "intents": ["calendar"], "tag": "core"}
+{"utterance": "when does my first thing start today", "intents": ["calendar"], "tag": "core"}
+{"utterance": "do I have a free hour this afternoon", "intents": ["calendar"], "tag": "core"}
+{"utterance": "push the design review back thirty minutes", "intents": ["calendar"], "tag": "core"}
+{"utterance": "clear my thursday", "intents": ["calendar"], "tag": "core"}
+{"utterance": "how long until my next call", "intents": ["calendar"], "tag": "core"}
+{"utterance": "what's booked for next monday", "intents": ["calendar"], "tag": "core"}
+{"utterance": "remind me about the group project meeting", "intents": ["calendar"], "tag": "core"}
+{"utterance": "is anything scheduled over the weekend", "intents": ["calendar"], "tag": "core"}
+{"utterance": "add office hours every wednesday at 4", "intents": ["calendar"], "tag": "core"}
+{"utterance": "who am I meeting at 2", "intents": ["calendar"], "tag": "core"}
+{"utterance": "delete the dentist appointment", "intents": ["calendar"], "tag": "core"}
+{"utterance": "am I double booked at any point today", "intents": ["calendar"], "tag": "core"}
+{"utterance": "what does friday afternoon look like", "intents": ["calendar"], "tag": "core"}
+{"utterance": "find me a slot for a one hour meeting this week", "intents": ["calendar"], "tag": "core"}
+{"utterance": "when is my last meeting today", "intents": ["calendar"], "tag": "core"}
+{"utterance": "do I need to be anywhere at 9", "intents": ["calendar"], "tag": "core"}
+{"utterance": "schedule a study block tonight", "intents": ["calendar"], "tag": "core"}
+{"utterance": "how packed is next week", "intents": ["calendar"], "tag": "core"}
+{"utterance": "shift everything on tuesday an hour later", "intents": ["calendar"], "tag": "core"}
+{"utterance": "what time is the lecture", "intents": ["calendar"], "tag": "core"}
+{"utterance": "is my calendar clear tonight", "intents": ["calendar"], "tag": "core"}
+{"utterance": "book a room for the sync tomorrow", "intents": ["calendar"], "tag": "core"}
+{"utterance": "how many hours of meetings today", "intents": ["calendar"], "tag": "core"}
+{"utterance": "move my one on one to next week", "intents": ["calendar"], "tag": "core"}
+{"utterance": "anything on my schedule I forgot about", "intents": ["calendar"], "tag": "core"}
+{"utterance": "what's my first meeting on monday", "intents": ["calendar"], "tag": "core"}
+{"utterance": "set up a call with the advisor", "intents": ["calendar"], "tag": "core"}
+{"utterance": "check if I'm busy at noon", "intents": ["calendar"], "tag": "core"}
+{"utterance": "how's the temperature outside right now", "intents": ["weather"], "tag": "core"}
+{"utterance": "will it be sunny this afternoon", "intents": ["weather"], "tag": "core"}
+{"utterance": "what's it going to feel like today", "intents": ["weather"], "tag": "core"}
+{"utterance": "any snow coming this week", "intents": ["weather"], "tag": "core"}
+{"utterance": "do I need sunscreen", "intents": ["weather"], "tag": "core"}
+{"utterance": "how windy is it out there", "intents": ["weather"], "tag": "core"}
+{"utterance": "is there a frost warning tonight", "intents": ["weather"], "tag": "core"}
+{"utterance": "what's the high going to be", "intents": ["weather"], "tag": "core"}
+{"utterance": "should I close the windows", "intents": ["weather"], "tag": "core"}
+{"utterance": "is it going to storm later", "intents": ["weather"], "tag": "core"}
+{"utterance": "what's the air quality like today", "intents": ["weather"], "tag": "core"}
+{"utterance": "how much rain are we getting", "intents": ["weather"], "tag": "core"}
+{"utterance": "is it safe to hike this afternoon", "intents": ["weather"], "tag": "core"}
+{"utterance": "any weather warnings in effect", "intents": ["weather"], "tag": "core"}
+{"utterance": "what should I wear today", "intents": ["weather"], "tag": "core"}
+{"utterance": "how's the forecast looking for thursday", "intents": ["weather"], "tag": "core"}
+{"utterance": "is it cold enough to freeze tonight", "intents": ["weather"], "tag": "core"}
+{"utterance": "do I need a raincoat", "intents": ["weather"], "tag": "core"}
+{"utterance": "how hot does it get later", "intents": ["weather"], "tag": "core"}
+{"utterance": "is there a flood watch", "intents": ["weather"], "tag": "core"}
+{"utterance": "when does the rain start", "intents": ["weather"], "tag": "core"}
+{"utterance": "what's the humidity", "intents": ["weather"], "tag": "core"}
+{"utterance": "should I be worried about the heat today", "intents": ["weather"], "tag": "core"}
+{"utterance": "is the smoke bad outside", "intents": ["weather"], "tag": "core"}
+{"utterance": "give me the three day forecast", "intents": ["weather"], "tag": "core"}
+{"utterance": "how's tomorrow looking weather wise", "intents": ["weather"], "tag": "core"}
+{"utterance": "any thunderstorms expected", "intents": ["weather"], "tag": "core"}
+{"utterance": "what's the wind chill", "intents": ["weather"], "tag": "core"}
+{"utterance": "is it nice out", "intents": ["weather"], "tag": "core"}
+{"utterance": "do I need to water the plants or is rain coming", "intents": ["weather"], "tag": "core"}
+{"utterance": "who won the nuggets game", "intents": ["sports"], "tag": "core"}
+{"utterance": "what was the final score last night", "intents": ["sports"], "tag": "core"}
+{"utterance": "when do the broncos play next", "intents": ["sports"], "tag": "core"}
+{"utterance": "how did verstappen finish", "intents": ["sports"], "tag": "core"}
+{"utterance": "what's the ipl score", "intents": ["sports"], "tag": "core"}
+{"utterance": "show me the nfl standings", "intents": ["sports"], "tag": "core"}
+{"utterance": "is there a race this weekend", "intents": ["sports"], "tag": "core"}
+{"utterance": "who's top of the western conference", "intents": ["sports"], "tag": "core"}
+{"utterance": "did india win", "intents": ["sports"], "tag": "core"}
+{"utterance": "what time does the game start", "intents": ["sports"], "tag": "core"}
+{"utterance": "any playoff games tonight", "intents": ["sports"], "tag": "core"}
+{"utterance": "how many points did jokic have", "intents": ["sports"], "tag": "core"}
+{"utterance": "who's on pole for the grand prix", "intents": ["sports"], "tag": "core"}
+{"utterance": "give me the cricket schedule", "intents": ["sports"], "tag": "core"}
+{"utterance": "what's the score right now", "intents": ["sports"], "tag": "core"}
+{"utterance": "did the chiefs cover", "intents": ["sports"], "tag": "core"}
+{"utterance": "when is the super bowl", "intents": ["sports"], "tag": "core"}
+{"utterance": "who is leading the constructors championship", "intents": ["sports"], "tag": "core"}
+{"utterance": "any nba scores from last night", "intents": ["sports"], "tag": "core"}
+{"utterance": "is the test match still going", "intents": ["sports"], "tag": "core"}
+{"utterance": "what's the record for the lakers this season", "intents": ["sports"], "tag": "core"}
+{"utterance": "who plays on sunday", "intents": ["sports"], "tag": "core"}
+{"utterance": "how did the race end", "intents": ["sports"], "tag": "core"}
+{"utterance": "show me today's fixtures", "intents": ["sports"], "tag": "core"}
+{"utterance": "did anyone get injured in the game", "intents": ["sports"], "tag": "core"}
+{"utterance": "what quarter is it", "intents": ["sports"], "tag": "core"}
+{"utterance": "who won the match yesterday", "intents": ["sports"], "tag": "core"}
+{"utterance": "is there f1 qualifying today", "intents": ["sports"], "tag": "core"}
+{"utterance": "how far behind are the nuggets in the standings", "intents": ["sports"], "tag": "core"}
+{"utterance": "give me the latest scores", "intents": ["sports"], "tag": "core"}
+{"utterance": "anything big in the news today", "intents": ["news"], "tag": "core"}
+{"utterance": "what's going on in tech right now", "intents": ["news"], "tag": "core"}
+{"utterance": "read me the world news", "intents": ["news"], "tag": "core"}
+{"utterance": "any breaking stories", "intents": ["news"], "tag": "core"}
+{"utterance": "summarize the headlines for me", "intents": ["news"], "tag": "core"}
+{"utterance": "what happened overnight", "intents": ["news"], "tag": "core"}
+{"utterance": "anything from hacker news worth reading", "intents": ["news"], "tag": "core"}
+{"utterance": "what's the top story", "intents": ["news"], "tag": "core"}
+{"utterance": "give me a news roundup", "intents": ["news"], "tag": "core"}
+{"utterance": "is there anything major happening", "intents": ["news"], "tag": "core"}
+{"utterance": "what are people talking about today", "intents": ["news"], "tag": "core"}
+{"utterance": "any updates on that story from yesterday", "intents": ["news"], "tag": "core"}
+{"utterance": "what's in the tech press", "intents": ["news"], "tag": "core"}
+{"utterance": "show me the latest headlines", "intents": ["news"], "tag": "core"}
+{"utterance": "anything interesting in the news", "intents": ["news"], "tag": "core"}
+{"utterance": "what's happening in the world right now", "intents": ["news"], "tag": "core"}
+{"utterance": "give me three headlines", "intents": ["news"], "tag": "core"}
+{"utterance": "any science news", "intents": ["news"], "tag": "core"}
+{"utterance": "what did I miss in the news", "intents": ["news"], "tag": "core"}
+{"utterance": "anything from the bbc today", "intents": ["news"], "tag": "core"}
+{"utterance": "hello there", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "hey", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "good evening jarvis", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "thanks for that", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "appreciate it", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "how's your day going", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "you're quite useful you know", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "morning", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "nice work", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "see you later", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "how are things", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "cheers jarvis", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "you there", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "that was helpful thanks", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "goodnight", "intents": ["smalltalk"], "tag": "core"}
+{"utterance": "what do you actually do", "intents": ["system"], "tag": "core"}
+{"utterance": "list your features", "intents": ["system"], "tag": "core"}
+{"utterance": "repeat that please", "intents": ["system"], "tag": "core"}
+{"utterance": "say it again slower", "intents": ["system"], "tag": "core"}
+{"utterance": "cancel that", "intents": ["system"], "tag": "core"}
+{"utterance": "stop talking", "intents": ["system"], "tag": "core"}
+{"utterance": "switch to the cloud model", "intents": ["system"], "tag": "core"}
+{"utterance": "which model are you running", "intents": ["system"], "tag": "core"}
+{"utterance": "turn the voice off", "intents": ["system"], "tag": "core"}
+{"utterance": "how do I change your settings", "intents": ["system"], "tag": "core"}
+{"utterance": "are you working properly", "intents": ["system"], "tag": "core"}
+{"utterance": "what can I ask you about", "intents": ["system"], "tag": "core"}
+{"utterance": "reset the conversation", "intents": ["system"], "tag": "core"}
+{"utterance": "speak up a bit", "intents": ["system"], "tag": "core"}
+{"utterance": "never mind forget it", "intents": ["system"], "tag": "core"}
+{"utterance": "why did that take so long", "intents": ["system"], "tag": "core"}
+{"utterance": "is your data up to date", "intents": ["system"], "tag": "core"}
+{"utterance": "shut down", "intents": ["system"], "tag": "core"}
