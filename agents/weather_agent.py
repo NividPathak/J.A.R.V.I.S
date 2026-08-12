@@ -52,6 +52,35 @@ class WeatherAgent(CachedAgent):
             lines.extend(f"Worth mentioning: {tip}" for tip in p["advice"])
         return "\n".join(lines)
 
+    def brief(self) -> str:
+        entry = self._cache.get("weather")
+        if entry is None or not entry.payload:
+            return "Weather is unavailable."
+
+        p = entry.payload
+        now, days = p["now"], p.get("days") or []
+        lines: list[str] = []
+
+        # Advisories first — the whole point of a briefing is being told the
+        # thing you'd want to know before leaving the house.
+        for alert in p.get("alerts") or []:
+            lines.append(f"{alert['event']} in effect.")
+
+        line = f"{now['temp']} degrees, {now['condition']}"
+        if days:
+            line += f", high of {days[0]['high']} and low of {days[0]['low']}"
+        lines.append(line + ".")
+
+        if p["rain_next_12h"] >= 30:
+            lines.append(f"{p['rain_next_12h']}% chance of rain in the next twelve hours.")
+
+        # Skip the first tip when it merely restates the alert named above.
+        tips = [t for t in (p.get("advice") or []) if not t.startswith(tuple(
+            (a.get("event") or "") for a in (p.get("alerts") or [])
+        ) or ("\0",))]
+        lines.extend(tips[:2])
+        return "\n".join(lines)
+
     def summary(self) -> str:
         entry = self._cache.get("weather")
         if entry is None or not entry.payload:

@@ -85,9 +85,18 @@ class CachedAgent:
         raise NotImplementedError
 
     def summary(self) -> str:
-        """Templated digest for the morning briefing — no model call, so it's
-        instant and deterministic. Override per agent."""
+        """One line. Templated, no model call. Override per agent."""
         raise NotImplementedError
+
+    def brief(self) -> str:
+        """This agent's section of the morning briefing.
+
+        Templated like `summary()` and for the same reason: the briefing fires
+        unattended at dawn, so it has to be deterministic and it has to work
+        when the model is down. Richer than `summary()` because it's the whole
+        of what gets read out, not a fragment of a sentence.
+        """
+        return self.summary()
 
     def handle(self, utterance: str) -> str:
         context = self.context()

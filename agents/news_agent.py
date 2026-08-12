@@ -79,6 +79,66 @@ class NewsAgent(CachedAgent):
             + (f" ({detail})" if detail else "")
         )
 
+    def brief(self) -> str:
+        from datetime import date, timedelta
+
+        lines: list[str] = []
+        today = date.today()
+        # A briefing wants last night's results and today's fixtures — bounded
+        # at both ends. Without an upper bound an out-of-season league's next
+        # season opener reads as though it were tonight.
+        window = (str(today - timedelta(days=1)), str(today + timedelta(days=1)))
+
+        for key in SPORT_SOURCES:
+            entry = self._cache.get(key)
+            if entry is None or not entry.payload:
+                continue
+            events = entry.payload.get("events") or entry.payload.get("games") or []
+            current = [e for e in events if window[0] <= (e.get("start") or "")[:10] <= window[1]]
+            for event in current[:3]:
+                lines.append(f"  {SPORT_LABELS[key]}: {self._brief_line(event)}")
+
+        if lines:
+            lines.insert(0, "Sport:")
+
+        news = self._cache.get("news")
+        if news and news.payload:
+            headlines = (news.payload.get("headlines") or [])[:3]
+            if headlines:
+                if lines:
+                    lines.append("")
+                lines.append("Headlines:")
+                lines.extend(f"  {h['title']} ({h['source']})" for h in headlines)
+
+        return "\n".join(lines) if lines else "No news or sport cached."
+
+    @staticmethod
+    def _brief_line(event: dict) -> str:
+        """Human phrasing for the briefing.
+
+        `_describe` exists for the model and carries brackets, ISO dates and
+        state codes. None of that survives being read aloud, so the briefing
+        gets its own rendering rather than reusing it.
+        """
+        competitors = event.get("competitors", [])
+        scored = [c for c in competitors if c.get("score") is not None]
+        name = event.get("short_name") or event.get("name") or "match"
+        state = event.get("state")
+
+        if state == "post" and len(scored) == 2:
+            winner = next((c for c in scored if c.get("winner") in (True, "true")), None)
+            loser = next((c for c in scored if c is not winner), None)
+            if winner and loser:
+                return f"{winner['name']} beat {loser['name']}, {winner['score']} to {loser['score']}"
+            return f"{name} finished {' - '.join(str(c['score']) for c in scored)}"
+
+        if state == "in":
+            live = ", ".join(f"{c['name']} {c['score']}" for c in scored)
+            return f"{live} — in progress" if live else f"{name} under way"
+
+        detail = event.get("detail") or "later"
+        return f"{name}, {detail}"
+
     def summary(self) -> str:
         bits = []
         news = self._cache.get("news")

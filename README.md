@@ -54,8 +54,8 @@ blanking the page.
 | 0 | Data layer — cache, poller, source contract | Done |
 | 1 | Orchestrator, router interface, routing eval set | Done |
 | 2 | Subagents: calendar, weather, news/sports | Done |
-| 3 | Morning briefing (pre-computed, pushed) | Next |
-| 4 | Fine-tuned router (LoRA on `llama3.2:3b`) | Planned |
+| 3 | Morning briefing (pre-computed, pushed) | Done |
+| 4 | Fine-tuned router (LoRA on `llama3.2:3b`) | Next |
 | 5 | Live sports dashboard | Planned |
 | 6 | Voice (Whisper → orchestrator → TTS) | Planned |
 
@@ -73,6 +73,40 @@ model call, which is what the morning briefing will use.
 | `calendar` | `calendar` | your schedule, availability, what's next |
 | `weather` | `weather` | forecast, advisories, precautions |
 | `news` | `news`, `nba`, `nfl`, `f1`, `cricket` | headlines and sport |
+
+## Morning briefing
+
+```bash
+python brief.py                  # print it
+python brief.py --speak          # read it aloud
+python brief.py --notify         # macOS notification
+```
+
+Composed entirely from templated `brief()` calls — **~5ms, no model call**. That
+is deliberate: it fires unattended at dawn, so it has to be deterministic and it
+has to work when Ollama is down. A briefing that intermittently fails is one you
+stop trusting, then stop reading.
+
+Three renderings, because the constraints genuinely differ. The terminal takes
+structure; speech can't (headings and bracketed state codes read terribly
+aloud); a notification gets two lines before macOS truncates, so it carries only
+enough to make you go and read the rest.
+
+It reports its own staleness. A briefing confidently quoting yesterday's
+forecast is worse than one admitting it couldn't reach the data.
+
+### Running it daily
+
+```bash
+./scripts/install_launchd.sh --dry-run   # preview, installs nothing
+./scripts/install_launchd.sh             # poller + 07:00 briefing
+./scripts/install_launchd.sh --speak --hour 6
+./scripts/install_launchd.sh --uninstall
+```
+
+Installs two launchd agents: the poller (`KeepAlive`, so it restarts if it dies
+and survives reboot) and the briefing on a calendar interval. launchd over cron
+because it handles both of those and needs no login shell.
 
 ## Data sources
 

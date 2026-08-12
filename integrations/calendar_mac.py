@@ -13,6 +13,7 @@ Dates are emitted as explicit components rather than formatted strings —
 AppleScript's date rendering is locale-dependent and miserable to parse back.
 """
 import subprocess
+import time
 from datetime import datetime, timedelta
 from typing import Any
 
@@ -46,8 +47,37 @@ return out
 """
 
 
+def _ensure_running(timeout: float = 20.0) -> None:
+    """Start Calendar.app, hidden and unfocused, and wait until it answers.
+
+    Querying a quit Calendar.app fails with -600 "Application isn't running",
+    and quit is its normal state at 7am when the briefing runs — so without this
+    the calendar section failed every morning. An AppleScript `launch` inside
+    the tell block isn't enough: the block fails resolving before `launch` runs.
+
+    `-g` keeps it out of the foreground and `-j` starts it hidden, so the poller
+    never steals focus mid-work.
+    """
+    if subprocess.run(["pgrep", "-x", "Calendar"], capture_output=True).returncode == 0:
+        return
+
+    subprocess.run(["open", "-g", "-j", "-a", "Calendar"], capture_output=True, timeout=30)
+
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        probe = subprocess.run(
+            ["osascript", "-e", 'tell application "Calendar" to return count of calendars'],
+            capture_output=True, text=True, timeout=15,
+        )
+        if probe.returncode == 0:
+            return
+        time.sleep(0.5)
+    raise RuntimeError("Calendar.app did not become available")
+
+
 def upcoming(days: int = 7) -> list[dict[str, Any]]:
     """Events between now and `days` ahead, across every calendar. Raises on failure."""
+    _ensure_running()
     result = subprocess.run(
         ["osascript", "-e", SCRIPT % {"days": days}],
         capture_output=True, text=True, timeout=QUERY_TIMEOUT,
