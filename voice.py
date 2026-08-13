@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Voice loop — speak to JARVIS, it speaks back.
 
-    python voice.py                  # press Enter to talk
-    python voice.py --hands-free     # listens continuously
+    python voice.py                  # say "Hey Jarvis"
+    python voice.py --push-to-talk   # press Enter instead
     python voice.py --router tuned   # fine-tuned router (faster)
 
 Speech is a layer over the orchestrator, not a rewrite of it: the same route and
@@ -20,7 +20,7 @@ from rich.markup import escape
 
 from core.briefing import BriefingComposer
 from core.orchestrator import Response
-from integrations import speech
+from integrations import speech, wake
 from main import build
 
 console = Console()
@@ -93,7 +93,9 @@ def turn(orchestrator, heard: speech.Heard, speak: bool, composer=None) -> Respo
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="J.A.R.V.I.S voice")
-    ap.add_argument("--hands-free", action="store_true", help="listen continuously")
+    ap.add_argument("--push-to-talk", action="store_true", help="press Enter instead of saying the wake word")
+    ap.add_argument("--hands-free", action="store_true", help="no wake word — records on any speech")
+    ap.add_argument("--threshold", type=float, help=f"wake sensitivity (default {wake.THRESHOLD})")
     ap.add_argument("--router", choices=("llm", "tuned"), help="routing backend")
     ap.add_argument("--no-speak", action="store_true", help="transcribe and answer, but stay quiet")
     ap.add_argument("-v", "--verbose", action="store_true")
@@ -126,16 +128,40 @@ def main() -> int:
 
     composer = BriefingComposer(orchestrator.agents)
 
+    # Wake word is the default way in. It only earns that by staying quiet:
+    # measured 0 false accepts across negatives including "hey siri set a timer"
+    # and "curtis is coming over later".
+    listener = None
+    if not args.push_to_talk and not args.hands_free:
+        ok_wake, why_wake = wake.available()
+        if ok_wake:
+            listener = wake.WakeWord(threshold=args.threshold or wake.THRESHOLD)
+        else:
+            console.print(f"[yellow]Wake word unavailable ({why_wake}) — falling back to Enter.[/]")
+
     console.print("[dim]Measuring room noise…[/]")
     threshold = speech.calibrate()
     console.print(f"[dim]Silence threshold {threshold:.4f}[/]\n")
 
-    mode = "listening continuously" if args.hands_free else "press Enter to talk"
-    console.print(f"[bold cyan]J.A.R.V.I.S[/] ready — {mode}. Ctrl-C to exit.\n")
+    if listener:
+        mode = f'say "[bold]{wake.PHRASE}[/]"'
+    elif args.hands_free:
+        mode = "listening continuously (no wake word)"
+    else:
+        mode = "press Enter to talk"
+    console.print(f"[bold cyan]J.A.R.V.I.S[/] ready — {mode}.")
+    # An always-on microphone should have an obvious off switch, not be a thing
+    # you forget is running.
+    console.print("[dim]Microphone is live and local — nothing leaves this machine. Ctrl-C to stop.[/]\n")
 
     while True:
         try:
-            if not args.hands_free:
+            if listener:
+                console.print(f'[dim]waiting for "{wake.PHRASE}"…[/]')
+                detected = listener.wait()
+                wake.acknowledge()
+                console.print(f"[cyan]▸ heard you[/] [dim](confidence {detected.score:.2f})[/]")
+            elif not args.hands_free:
                 console.input("[dim]Enter to talk…[/]")
             console.print("[dim]listening…[/]")
 

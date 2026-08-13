@@ -9,3 +9,7 @@ nba_api>=1.4
 # LLM backends (Phase 1)
 ollama>=0.3
 anthropic>=0.40
+openwakeword>=0.6
+sounddevice>=0.4
+mlx-whisper>=0.4
+mlx-lm>=0.31

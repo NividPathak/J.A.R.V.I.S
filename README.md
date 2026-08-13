@@ -132,10 +132,20 @@ other.
 ## Voice
 
 ```bash
-python voice.py                 # press Enter to talk
-python voice.py --hands-free    # listens continuously
-python voice.py --router tuned  # fine-tuned router
+python voice.py                 # say "Hey Jarvis"
+python voice.py --push-to-talk  # press Enter instead
+python voice.py --threshold 0.7 # less sensitive wake word
 ```
+
+**Wake word: "Hey Jarvis"** — openWakeWord's pretrained model, free, on CPU,
+nothing leaving the machine. Measured against synthesized speech: wake phrases
+score 0.85–1.00, and six negatives including "hey siri set a timer" and "curtis
+is coming over later" all scored **0.000**. Threshold sits at 0.5, in the middle
+of that gap.
+
+Note it is the *phrase*, not the name — bare "Jarvis" scores 0.010 and will not
+trigger. A detection plays a tone, because talking into a void with no idea
+whether it woke is what makes a wake word feel broken.
 
 Whisper on the GPU via MLX, macOS `say` for output — local, free, offline. Speech
 is a layer over the orchestrator rather than a rewrite: the same route and
