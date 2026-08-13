@@ -3,274 +3,319 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>J.A.R.V.I.S — scoreboard</title>
+<title>J.A.R.V.I.S — tactical scoreboard</title>
 <style>
-  /* Light is the base definition; dark redefines only the tokens, so no colour
-     has its sole definition inside a media query. */
+  /* Committed to a dark HUD. A light-mode heads-up display reads as a mistake
+     rather than a theme, so this paints its own ground explicitly instead of
+     half-supporting both. */
   :root {
-    --bg:        #ececea;
-    --surface:   #fbfbfa;
-    --raise:     #f3f3f0;
-    --border:    #dededa;
-    --ink:       #0b0b0b;
-    --ink-2:     #4e4d4a;
-    --ink-3:     #86857f;
-    /* Status — fixed, never themed, always paired with a word. */
-    --good: #0ca30c; --warning: #fab219; --serious: #ec835a; --critical: #d03b3b;
-    /* Sport accents: a fixed categorical order, never cycled or reassigned. */
-    --acc-nba: #d1671f; --acc-nfl: #2a78d6; --acc-f1: #c0392b; --acc-cricket: #14866d;
-    --glow: 0 0 0 1px rgba(0,0,0,.03);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --bg: #0a0c0f; --surface: #12161b; --raise: #171c23; --border: #232a33;
-      --ink: #eef3f8; --ink-2: #9fb0c2; --ink-3: #647385;
-      --acc-nba: #ff9d4f; --acc-nfl: #4f9cff; --acc-f1: #ff5f56; --acc-cricket: #2fd6ab;
-      --glow: 0 0 24px -6px rgba(79,156,255,.25);
-    }
-  }
-  :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #0a0c0f; --surface: #12161b; --raise: #171c23; --border: #232a33;
-    --ink: #eef3f8; --ink-2: #9fb0c2; --ink-3: #647385;
-    --acc-nba: #ff9d4f; --acc-nfl: #4f9cff; --acc-f1: #ff5f56; --acc-cricket: #2fd6ab;
+    --void:    #04070c;
+    --panel:   rgba(10,18,28,.82);
+    --panel-2: rgba(14,24,36,.7);
+    --line:    rgba(90,160,210,.19);
+    --line-hot:rgba(120,220,255,.42);
+
+    --ink:   #e6f3ff;
+    --ink-2: #93aec6;
+    --ink-3: #5d768d;
+
+    --cyan:  #2ad4f0;      /* arc reactor — the system's own colour */
+    --good:  #22c55e; --warning:#fbbf24; --serious:#fb923c; --critical:#ef4444;
+
+    /* Sport accents in fixed categorical order — never cycled, never reassigned. */
+    --acc-nba:#ff9d4f; --acc-nfl:#4f9cff; --acc-f1:#ff5470; --acc-cricket:#2fd6ab;
+
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
   }
 
-  * { box-sizing: border-box; }
+  * { box-sizing:border-box; }
+  html,body { min-height:100%; }
   body {
-    margin: 0; padding: 22px 22px 40px;
+    margin:0; padding:26px 24px 56px; color:var(--ink);
+    font:14.5px/1.55 ui-sans-serif,-apple-system,"SF Pro Text",system-ui,sans-serif;
     background:
-      radial-gradient(1100px 520px at 15% -8%, color-mix(in oklab, var(--acc-nfl) 9%, transparent), transparent 70%),
-      radial-gradient(900px 460px at 88% 4%, color-mix(in oklab, var(--acc-cricket) 7%, transparent), transparent 70%),
-      var(--bg);
-    background-attachment: fixed;
-    color: var(--ink);
-    font: 14.5px/1.5 ui-sans-serif, -apple-system, "SF Pro Text", system-ui, sans-serif;
+      radial-gradient(1200px 640px at 12% -10%, rgba(42,212,240,.13), transparent 62%),
+      radial-gradient(1000px 560px at 92% 2%,  rgba(79,156,255,.10), transparent 62%),
+      radial-gradient(900px 700px at 50% 110%, rgba(47,214,171,.07), transparent 60%),
+      var(--void);
+    background-attachment:fixed;
+    position:relative; overflow-x:hidden;
   }
-  .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+  /* Engineering grid + scanlines. Fixed and non-interactive so they never
+     intercept a click or scroll with the content. */
+  body::before, body::after {
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  }
+  body::before {
+    background-image:
+      linear-gradient(rgba(90,170,220,.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(90,170,220,.055) 1px, transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(circle at 50% 32%, #000 42%, transparent 88%);
+  }
+  body::after {
+    background:repeating-linear-gradient(180deg, rgba(255,255,255,.022) 0 1px, transparent 1px 3px);
+    mix-blend-mode:overlay; opacity:.55;
+  }
+  .wrap { position:relative; z-index:1; }
+  .num { font-family:var(--mono); font-variant-numeric:tabular-nums; letter-spacing:-.01em; }
 
-  header { display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between; margin-bottom:16px; }
-  .brand { display:flex; align-items:baseline; gap:11px; }
-  h1 { font-size:16px; margin:0; letter-spacing:.16em; text-transform:uppercase; font-weight:650; }
-  .meta { color:var(--ink-3); font-size:12.5px; }
+  /* ---- header ---- */
+  header { display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  .brand { display:flex; align-items:center; gap:13px; }
+  .reactor {
+    width:26px; height:26px; border-radius:50%; flex:none; position:relative;
+    border:1.5px solid var(--cyan);
+    box-shadow:0 0 14px rgba(42,212,240,.55), inset 0 0 10px rgba(42,212,240,.35);
+  }
+  .reactor::after {
+    content:""; position:absolute; inset:6px; border-radius:50%;
+    background:var(--cyan); box-shadow:0 0 12px var(--cyan);
+    animation:breathe 3.4s ease-in-out infinite;
+  }
+  @keyframes breathe { 50% { opacity:.42; transform:scale(.82); } }
+  h1 { margin:0; font-size:15px; letter-spacing:.42em; font-weight:700; text-transform:uppercase; }
+  .tag { color:var(--cyan); font-size:10px; letter-spacing:.3em; text-transform:uppercase; opacity:.75; }
+  .meta { color:var(--ink-3); font-size:11.5px; letter-spacing:.06em; }
+  .meta .on { color:var(--good); }
 
-  .strip { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+  /* ---- status strip ---- */
+  .strip { display:flex; flex-wrap:wrap; gap:9px; margin-bottom:20px; }
   .pill {
-    display:inline-flex; align-items:center; gap:7px; padding:6px 12px;
-    background:var(--surface); border:1px solid var(--border); border-radius:999px;
-    font-size:12.5px; color:var(--ink-2);
+    display:inline-flex; align-items:center; gap:8px; padding:7px 14px;
+    background:var(--panel-2); border:1px solid var(--line);
+    clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);
+    font-size:12px; color:var(--ink-2); backdrop-filter:blur(7px);
   }
   .pill b { color:var(--ink); font-weight:650; }
 
-  .grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill, minmax(370px,1fr)); align-items:start; }
+  /* ---- cards ---- */
+  .grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fill,minmax(390px,1fr)); align-items:start; }
   .card {
-    background:var(--surface); border:1px solid var(--border); border-radius:13px;
-    overflow:hidden; box-shadow:var(--glow);
+    position:relative; background:var(--panel); border:1px solid var(--line);
+    backdrop-filter:blur(11px);
+    clip-path:polygon(16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 16px);
+    transition:border-color .28s, transform .28s;
   }
+  .card:hover { border-color:var(--line-hot); transform:translateY(-2px); }
+  /* Corner brackets — drawn, not imagery, so they cost nothing. */
+  .card::before, .card::after {
+    content:""; position:absolute; width:18px; height:18px; pointer-events:none;
+    border-color:var(--accent); opacity:.85;
+  }
+  .card::before { top:-1px; right:-1px; border-top:2px solid; border-right:2px solid; }
+  .card::after  { bottom:-1px; left:-1px; border-bottom:2px solid; border-left:2px solid; }
+
   .card-head {
+    position:relative; overflow:hidden;
     display:flex; align-items:center; justify-content:space-between; gap:10px;
-    padding:12px 15px; border-bottom:1px solid var(--border);
-    background:linear-gradient(180deg, color-mix(in oklab, var(--accent) 11%, transparent), transparent);
+    padding:13px 16px; border-bottom:1px solid var(--line);
+    background:linear-gradient(115deg, color-mix(in oklab, var(--accent) 17%, transparent), transparent 62%);
   }
-  .card-title { display:flex; align-items:center; gap:9px; }
-  .rail { width:3px; height:16px; border-radius:2px; background:var(--accent); }
-  h2 { font-size:12.5px; margin:0; letter-spacing:.13em; text-transform:uppercase; font-weight:650; }
-  .card-body { padding:5px 15px 13px; }
+  .card-title { display:flex; align-items:center; gap:10px; }
+  .rail { width:3px; height:17px; background:var(--accent); box-shadow:0 0 9px var(--accent); }
+  h2 { margin:0; font-size:12px; letter-spacing:.2em; text-transform:uppercase; font-weight:700; }
+  .card-body { padding:4px 16px 14px; }
 
-  /* Status is colour + word. A bare dot is unreadable for CVD users and
-     disappears entirely under forced-colors. */
-  .status { display:inline-flex; align-items:center; gap:6px; font-size:11.5px; color:var(--ink-3); }
-  .dot { width:7px; height:7px; border-radius:50%; flex:none; }
-  .s-ok .dot{background:var(--good)} .s-stale .dot{background:var(--warning)}
-  .s-failing .dot{background:var(--critical)} .s-empty .dot{background:var(--ink-3)}
+  /* A live card gets a slow sweep — motion only where something is happening. */
+  .card.live { border-color:color-mix(in oklab,var(--accent) 55%,var(--line)); }
+  .card.live .card-head::after {
+    content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent);
+    animation:sweep 2.6s linear infinite;
+  }
+  @keyframes sweep { 0%{opacity:0;transform:translateX(-45%)} 50%{opacity:.85} 100%{opacity:0;transform:translateX(45%)} }
 
-  .ev { padding:11px 0; border-top:1px solid var(--border); }
+  /* Status = colour + word. A bare dot is invisible to CVD users and vanishes
+     entirely under forced-colors. */
+  .status { display:inline-flex; align-items:center; gap:6px; font-size:10.5px;
+            color:var(--ink-3); letter-spacing:.1em; text-transform:uppercase; }
+  .dot { width:6px; height:6px; border-radius:50%; flex:none; }
+  .s-ok .dot{background:var(--good);box-shadow:0 0 7px var(--good)}
+  .s-stale .dot{background:var(--warning);box-shadow:0 0 7px var(--warning)}
+  .s-failing .dot{background:var(--critical);box-shadow:0 0 7px var(--critical)}
+  .s-empty .dot{background:var(--ink-3)}
+
+  /* ---- events ---- */
+  .ev { padding:13px 0; border-top:1px solid color-mix(in oklab,var(--line) 62%,transparent); }
   .ev:first-child { border-top:0; }
-  .ev-top { display:flex; align-items:center; justify-content:space-between; gap:9px; margin-bottom:7px; }
-  .when { color:var(--ink-3); font-size:12px; }
-  .comp { color:var(--accent); font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; font-weight:650; }
+  .ev-top { display:flex; align-items:flex-start; justify-content:space-between; gap:9px; margin-bottom:4px; }
+  .comp { color:var(--accent); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; font-weight:700; }
+  .when { color:var(--ink-3); font-size:11.5px; }
   .badge {
-    font-size:10px; font-weight:750; letter-spacing:.09em; padding:2px 7px;
-    border-radius:4px; border:1px solid currentColor; flex:none;
+    font-size:9.5px; font-weight:800; letter-spacing:.16em; padding:3px 9px; flex:none;
+    border:1px solid currentColor;
+    clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);
   }
-  .b-live { color:var(--good); }
+  .b-live { color:var(--good); box-shadow:0 0 13px -3px var(--good); }
   .b-live::before { content:""; display:inline-block; width:5px; height:5px; border-radius:50%;
-    background:currentColor; margin-right:5px; vertical-align:middle; animation:p 1.6s ease-in-out infinite; }
-  @keyframes p { 50% { opacity:.25 } }
-  .b-final { color:var(--ink-3); } .b-pre { color:var(--ink-2); }
+    background:currentColor; margin-right:6px; vertical-align:middle; animation:blip 1.5s ease-in-out infinite; }
+  @keyframes blip { 50%{opacity:.2} }
+  .b-final{color:var(--ink-3)} .b-pre{color:var(--ink-2)}
 
-  .team { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:2px 0; }
-  .team .nm { color:var(--ink-2); }
+  .team { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:4px 0; }
+  .team .nm { color:var(--ink-2); font-size:13.5px; }
   .team.w .nm { color:var(--ink); font-weight:650; }
-  .team .sc { font-weight:700; color:var(--ink); }
+  .team.w .nm::before { content:"▸ "; color:var(--accent); }
+  .team .sc { font-size:19px; font-weight:700; color:var(--ink); }
+  .team.w .sc { color:var(--accent); text-shadow:0 0 15px color-mix(in oklab,var(--accent) 55%,transparent); }
 
-  details { margin-top:9px; }
+  /* ---- disclosure ---- */
+  details { margin-top:10px; border-top:1px solid color-mix(in oklab,var(--line) 45%,transparent); }
   summary {
-    cursor:pointer; font-size:11.5px; color:var(--ink-3); list-style:none;
-    padding:5px 0; user-select:none;
+    cursor:pointer; list-style:none; user-select:none; padding:7px 0;
+    font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);
   }
   summary::-webkit-details-marker { display:none; }
-  summary::before { content:"▸ "; }
-  details[open] summary::before { content:"▾ "; }
-  summary:hover { color:var(--ink-2); }
+  summary::before { content:"◢ "; color:var(--accent); opacity:.7; }
+  details[open] summary::before { content:"◥ "; }
+  summary:hover { color:var(--cyan); }
 
-  table { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:3px; }
-  th { text-align:right; color:var(--ink-3); font-weight:600; font-size:10.5px;
-       letter-spacing:.06em; padding:4px 0 5px; border-bottom:1px solid var(--border); }
+  table { width:100%; border-collapse:collapse; font-size:12px; margin:2px 0 6px; }
+  th { text-align:right; padding:5px 0; font-size:9.5px; letter-spacing:.1em; text-transform:uppercase;
+       color:var(--ink-3); font-weight:700; border-bottom:1px solid var(--line); }
   th:first-child, td:first-child { text-align:left; }
-  td { padding:4px 0; color:var(--ink-2); border-bottom:1px solid color-mix(in oklab, var(--border) 45%, transparent); }
+  td { padding:5px 0; color:var(--ink-2);
+       border-bottom:1px solid color-mix(in oklab,var(--line) 34%,transparent); }
   td:first-child { color:var(--ink); }
+  td.hi { color:var(--accent); font-weight:700; }
   tr:last-child td { border-bottom:0; }
-  td.hi { color:var(--ink); font-weight:650; }
 
-  .line { display:flex; justify-content:space-between; gap:12px; padding:3px 0; font-size:12.5px; }
-  .line .k { color:var(--ink-3); }
-  .line .v { color:var(--ink); font-weight:600; text-align:right; }
+  .line { display:flex; justify-content:space-between; gap:12px; padding:5px 0; font-size:12.5px;
+          border-bottom:1px solid color-mix(in oklab,var(--line) 28%,transparent); }
+  .line:last-child { border-bottom:0; }
+  .line .k { color:var(--ink-3); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; }
+  .line .v { color:var(--ink); font-weight:650; text-align:right; }
 
-  .flag { display:flex; gap:8px; align-items:baseline; padding:3px 0; font-size:12px; }
-  .flag .lap { color:var(--ink-3); flex:none; min-width:44px; }
+  .row { display:flex; gap:9px; align-items:baseline; padding:4px 0; font-size:12px; }
+  .row .lap { color:var(--ink-3); flex:none; min-width:56px; font-size:10.5px; letter-spacing:.08em; }
   .f-YELLOW{color:var(--warning)} .f-RED{color:var(--critical)}
   .f-GREEN{color:var(--good)} .f-CHEQUERED,.f-BLACK{color:var(--ink-2)}
 
-  .empty { color:var(--ink-3); font-size:13px; padding:9px 0; }
-  .err { color:var(--critical); font-size:12px; padding:6px 0; word-break:break-word; }
-  footer { margin-top:22px; color:var(--ink-3); font-size:12px; }
+  .empty { color:var(--ink-3); font-size:12.5px; padding:12px 0; letter-spacing:.05em; }
+  .err { color:var(--critical); font-size:11.5px; padding:7px 0; word-break:break-word; }
+  footer { margin-top:26px; color:var(--ink-3); font-size:11px; letter-spacing:.07em; }
+
+  @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; } }
+  @media (max-width:520px) { body{padding:16px 13px 40px} .grid{grid-template-columns:1fr} }
 </style>
 </head>
 <body>
+<div class="wrap">
 <header>
-  <div class="brand"><h1>J.A.R.V.I.S</h1><span class="meta" id="sub">scoreboard</span></div>
-  <div class="meta num" id="meta">loading…</div>
+  <div class="brand">
+    <span class="reactor"></span>
+    <div><h1>J.A.R.V.I.S</h1><div class="tag">tactical scoreboard</div></div>
+  </div>
+  <div class="meta num" id="meta">initialising…</div>
 </header>
 <div class="strip" id="strip"></div>
 <main class="grid" id="grid"></main>
 <footer id="footer"></footer>
+</div>
 
 <script>
 const REFRESH_MS = 15000;
-const STATE = { in:"LIVE", post:"FINAL", pre:"UPCOMING" };
-const HEALTH = { ok:"live data", stale:"stale", failing:"failing", empty:"no data" };
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const STATE  = { in:"LIVE", post:"FINAL", pre:"SCHEDULED" };
+const HEALTH = { ok:"online", stale:"stale", failing:"fault", empty:"no signal" };
+const esc = s => String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const ago = s => s==null?"never": s<60?`${s}s ago` : s<3600?`${Math.round(s/60)}m ago` : `${Math.round(s/3600)}h ago`;
 
-function statusEl(h, age){
-  return `<span class="status s-${esc(h)}"><span class="dot"></span>${esc(HEALTH[h]||h)}${
-    h==="ok"||age==null?"":" · "+ago(age)}</span>`;
-}
-function badge(state){
-  const cls = state==="in"?"b-live":state==="post"?"b-final":"b-pre";
-  return `<span class="badge ${cls}">${esc(STATE[state]||state)}</span>`;
-}
-function teams(ev){
-  return (ev.competitors||[]).map(c=>`<div class="team ${c.winner===true||c.winner==="true"?"w":""}">
-    <span class="nm">${esc(c.name||c.abbr||"?")}</span>
-    <span class="sc num">${c.score==null?"":esc(c.score)}</span></div>`).join("");
-}
+const statusEl = (h,age) =>
+  `<span class="status s-${esc(h)}"><span class="dot"></span>${esc(HEALTH[h]||h)}${h==="ok"||age==null?"":" · "+ago(age)}</span>`;
+const badge = st =>
+  `<span class="badge ${st==="in"?"b-live":st==="post"?"b-final":"b-pre"}">${esc(STATE[st]||st)}</span>`;
+const teams = ev => (ev.competitors||[]).map(c=>
+  `<div class="team ${c.winner===true||c.winner==="true"?"w":""}">
+     <span class="nm">${esc(c.name||c.abbr||"?")}</span>
+     <span class="sc num">${c.score==null?"":esc(c.score)}</span></div>`).join("");
 
-/* Box score — the columns differ by sport, so they're read from the payload's
-   own labels rather than hardcoded. */
-function boxScore(detail){
-  const blocks = (detail?.players)||[];
-  if(!blocks.length) return "";
-  const cols = ["PTS","FG","3PT","REB","AST"];
-  const body = blocks.map(t=>{
-    const use = cols.filter(c=>t.labels.includes(c));
-    if(!use.length) return "";
-    return `<table><thead><tr><th>${esc(t.team)}</th>${use.map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead>
-      <tbody>${t.players.map(p=>`<tr><td>${esc(p.name)}</td>${
-        use.map(c=>`<td class="num${c==="PTS"?" hi":""}">${esc(p.stats[c]??"—")}</td>`).join("")}</tr>`).join("")}
-      </tbody></table>`;
+/* Columns are read from the payload's own labels — they differ by sport, so
+   hardcoding them breaks the moment a second sport uses this. */
+function boxScore(d){
+  const blocks=(d?.players)||[]; if(!blocks.length) return "";
+  const want=["PTS","FG","3PT","REB","AST"];
+  const out=blocks.map(t=>{
+    const cols=want.filter(c=>t.labels.includes(c)); if(!cols.length) return "";
+    return `<table><thead><tr><th>${esc(t.team)}</th>${cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead>
+      <tbody>${t.players.map(p=>`<tr><td>${esc(p.name)}</td>${cols.map(c=>
+        `<td class="num${c==="PTS"?" hi":""}">${esc(p.stats[c]??"—")}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
   }).join("");
-  return body ? `<details><summary>Player stats</summary>${body}</details>` : "";
+  return out?`<details><summary>Player stats</summary>${out}</details>`:"";
 }
-
-function scoringPlays(detail){
-  const plays = (detail?.scoring)||[];
-  if(!plays.length) return "";
-  return `<details><summary>Scoring — ${plays.length} plays</summary>
-    ${plays.map(p=>`<div class="flag"><span class="lap num">Q${esc(p.period)}</span>
-      <span><b>${esc(p.team)}</b> ${esc(p.type||"")} — ${esc(p.text||"")}</span></div>`).join("")}</details>`;
+function scoringPlays(d){
+  const p=(d?.scoring)||[]; if(!p.length) return "";
+  return `<details><summary>Scoring · ${p.length} plays</summary>${p.map(x=>
+    `<div class="row"><span class="lap num">Q${esc(x.period)} ${esc(x.clock||"")}</span>
+     <span><b style="color:var(--accent)">${esc(x.team)}</b> ${esc(x.type||"")} — ${esc(x.text||"")}</span></div>`).join("")}</details>`;
 }
-
-function leaders(detail){
-  const teamsL = (detail?.leaders)||[];
-  if(!teamsL.length) return "";
-  return `<details><summary>Leaders</summary>${teamsL.map(t=>
-    t.entries.map(e=>`<div class="line"><span class="k">${esc(t.team)} · ${esc(e.category)}</span>
-      <span class="v">${esc(e.athlete)} — ${esc(e.value)}</span></div>`).join("")).join("")}</details>`;
+function leaders(d){
+  const t=(d?.leaders)||[]; if(!t.length) return "";
+  return `<details><summary>Leaders</summary>${t.map(tm=>tm.entries.map(e=>
+    `<div class="line"><span class="k">${esc(tm.team)} · ${esc(e.category)}</span>
+     <span class="v">${esc(e.athlete)} — ${esc(e.value)}</span></div>`).join("")).join("")}</details>`;
 }
 
 function eventEl(ev){
-  // `detail` is the status line ("Final", "7:00 PM EDT"); `stats` is the
-  // enrichment. Keeping them separate matters — an earlier version wrote the
-  // box score over the status text and every event lost its time.
-  const d = ev.stats;
+  // `detail` is the status line; `stats` is the enrichment. Writing the box
+  // score to `detail` once destroyed the time on every event.
+  const d=ev.stats;
   return `<div class="ev">
     <div class="ev-top">
-      <span>${ev.competition?`<span class="comp">${esc(ev.competition)}</span> `:""}<span class="when">${esc(ev.name||ev.short_name||"")}</span></span>
+      <span>${ev.competition?`<span class="comp">${esc(ev.competition)}</span><br>`:""}<span class="when">${esc(ev.detail||"")}</span></span>
       ${badge(ev.state)}
     </div>
-    <div class="when" style="margin:-2px 0 7px">${esc(ev.detail||"")}</div>
-    ${teams(ev)}
-    ${boxScore(d)}${scoringPlays(d)}${leaders(d)}
+    ${teams(ev)}${boxScore(d)}${scoringPlays(d)}${leaders(d)}
   </div>`;
 }
 
-/* F1 is a classification, not a scoreline, so its panel is built from the race
-   result rather than the generic event renderer. */
+/* F1 is a classification, not a scoreline — its own renderer. */
 function f1Card(s){
-  const r = s.last_race;
-  if(!r) return `<div class="empty">No race data.</div>`;
-  const fl = r.fastest_lap, g = r.biggest_gainer;
-  const podium = (r.podium||[]).map((p,i)=>`<div class="team ${i===0?"w":""}">
-      <span class="nm">P${p.position} ${esc(p.driver)} <span style="color:var(--ink-3)">${esc(p.constructor||"")}</span></span>
-      <span class="sc num">grid ${esc(p.grid??"—")}</span></div>`).join("");
-
-  const grid = (r.results||[]).slice(0,10).map(p=>`<tr>
-      <td>${esc(p.driver)}</td><td class="num">${esc(p.grid??"—")}</td>
-      <td class="num hi">${esc(p.position??"—")}</td>
+  const r=s.last_race; if(!r) return `<div class="empty">No race data.</div>`;
+  const fl=r.fastest_lap, g=r.biggest_gainer;
+  const podium=(r.podium||[]).map((p,i)=>`<div class="team ${i===0?"w":""}">
+      <span class="nm">P${p.position} ${esc(p.driver)} <span style="color:var(--ink-3);font-size:11.5px">${esc(p.constructor||"")}</span></span>
+      <span class="sc num" style="font-size:13px;color:var(--ink-3)">grid ${esc(p.grid??"—")}</span></div>`).join("");
+  const grid=(r.results||[]).slice(0,10).map(p=>`<tr><td>${esc(p.driver)}</td>
+      <td class="num">${esc(p.grid??"—")}</td><td class="num hi">${esc(p.position??"—")}</td>
       <td class="num" style="color:${p.gained>0?"var(--good)":p.gained<0?"var(--serious)":"var(--ink-3)"}">${
         p.gained==null?"—":(p.gained>0?"+":"")+p.gained}</td></tr>`).join("");
-
-  const flags = (s.race_control||[]).filter(m=>m.flag!=="GREEN");
+  const flags=(s.race_control||[]).filter(m=>m.flag!=="GREEN");
   return `
-    <div class="line"><span class="k">${esc(r.circuit||"")}${r.locality?", "+esc(r.locality):""}</span><span class="v">${esc(r.date||"")}</span></div>
+    <div class="line"><span class="k">${esc(r.circuit||"")}</span><span class="v num">${esc(r.date||"")}</span></div>
     ${podium}
-    <div class="line"><span class="k">Fastest lap</span><span class="v">${fl?esc(fl.driver)+" · "+esc(fl.fastest_lap):"—"}</span></div>
-    <div class="line"><span class="k">Top speed</span><span class="v">${r.top_speed?esc(r.top_speed.speed)+" "+esc(r.top_speed.units):"not reported"}</span></div>
-    ${g?`<div class="line"><span class="k">Biggest gain</span><span class="v">${esc(g.driver)} ${g.grid}→P${g.position} (+${g.gained})</span></div>`:""}
-    <details><summary>Grid → finish</summary>
-      <table><thead><tr><th>Driver</th><th>Grid</th><th>Fin</th><th>+/−</th></tr></thead><tbody>${grid}</tbody></table></details>
-    ${(r.retirements||[]).length?`<details><summary>Retirements — ${r.retirements.length}</summary>
-      ${r.retirements.map(x=>`<div class="flag"><span class="lap num">lap ${esc(x.laps??"—")}</span>
-        <span>${esc(x.driver)} — ${esc(x.status)}</span></div>`).join("")}</details>`:""}
-    ${flags.length?`<details><summary>Race control — ${flags.length} events</summary>
-      ${flags.map(m=>`<div class="flag"><span class="lap num">lap ${esc(m.lap??"—")}</span>
-        <span class="f-${esc(m.flag)}"><b>${esc(m.flag)}</b></span>
-        <span style="color:var(--ink-2)">${esc(m.message||"")}</span></div>`).join("")}</details>`:""}`;
+    <div class="line"><span class="k">Fastest lap</span><span class="v">${fl?esc(fl.driver)+" · <span class='num'>"+esc(fl.fastest_lap)+"</span>":"—"}</span></div>
+    <div class="line"><span class="k">Top speed</span><span class="v">${r.top_speed?`<span class="num">${esc(r.top_speed.speed)}</span> ${esc(r.top_speed.units)}`:"not reported"}</span></div>
+    ${g?`<div class="line"><span class="k">Biggest gain</span><span class="v">${esc(g.driver)} <span class="num">${g.grid}→P${g.position}</span> <span style="color:var(--good)">+${g.gained}</span></span></div>`:""}
+    <details><summary>Grid → finish</summary><table><thead><tr><th>Driver</th><th>Grid</th><th>Fin</th><th>+/−</th></tr></thead><tbody>${grid}</tbody></table></details>
+    ${(r.retirements||[]).length?`<details><summary>Retirements · ${r.retirements.length}</summary>${r.retirements.map(x=>
+      `<div class="row"><span class="lap num">lap ${esc(x.laps??"—")}</span><span>${esc(x.driver)} — <span style="color:var(--serious)">${esc(x.status)}</span></span></div>`).join("")}</details>`:""}
+    ${flags.length?`<details><summary>Race control · ${flags.length}</summary>${flags.map(m=>
+      `<div class="row"><span class="lap num">lap ${esc(m.lap??"—")}</span>
+       <span class="f-${esc(m.flag)}"><b>${esc(m.flag)}</b></span>
+       <span style="color:var(--ink-2)">${esc(m.message||"")}</span></div>`).join("")}</details>`:""}`;
 }
 
 function cardEl(s){
-  const accent = `--accent: var(--acc-${s.key})`;
   const body = s.key==="f1" ? f1Card(s)
     : (s.events||[]).length ? (s.events||[]).slice(0,5).map(eventEl).join("")
-    : `<div class="empty">Nothing scheduled.</div>`;
-  return `<section class="card" style="${accent}">
+    : `<div class="empty">No fixtures.</div>`;
+  return `<section class="card ${s.live?"live":""}" style="--accent:var(--acc-${s.key})">
     <div class="card-head">
       <div class="card-title"><span class="rail"></span><h2>${esc(s.label)}</h2></div>
-      ${statusEl(s.health, s.age_seconds)}
+      ${statusEl(s.health,s.age_seconds)}
     </div>
     <div class="card-body">${body}${s.error?`<div class="err">${esc(s.error)}</div>`:""}</div>
   </section>`;
 }
 
 function stripEl(st){
-  const out=[]; const w=st.weather||{}, c=st.calendar||{};
+  const out=[], w=st.weather||{}, c=st.calendar||{};
   if(w.temp!=null) out.push(`<span class="pill"><b class="num">${esc(w.temp)}°</b> ${esc(w.condition||"")}</span>`);
-  (w.alerts||[]).forEach(a=>out.push(`<span class="pill"><span class="dot" style="background:var(--warning)"></span>${esc(a)}</span>`));
-  if(c.next) out.push(`<span class="pill">Next: <b>${esc(c.next.title)}</b></span>`);
-  else if(c.today_count===0) out.push(`<span class="pill">Nothing scheduled today</span>`);
+  (w.alerts||[]).forEach(a=>out.push(`<span class="pill"><span class="dot" style="background:var(--warning);box-shadow:0 0 7px var(--warning)"></span>${esc(a)}</span>`));
+  if(c.next) out.push(`<span class="pill">Next <b>${esc(c.next.title)}</b></span>`);
+  else if(c.today_count===0) out.push(`<span class="pill">Schedule clear</span>`);
   return out.join("");
 }
 
@@ -280,13 +325,14 @@ async function refresh(){
     if(st.error) throw new Error(st.error);
     document.getElementById("strip").innerHTML = stripEl(st);
     document.getElementById("grid").innerHTML  = (st.sports||[]).map(cardEl).join("");
-    const live = (st.sports||[]).filter(s=>s.live).map(s=>s.label);
-    document.getElementById("meta").textContent =
-      (live.length?`● live: ${live.join(", ")} · `:"") + `updated ${new Date().toLocaleTimeString()}`;
+    const live=(st.sports||[]).filter(s=>s.live).map(s=>s.label);
+    document.getElementById("meta").innerHTML =
+      (live.length?`<span class="on">● LIVE ${esc(live.join(" / "))}</span> · `:"") +
+      `sync ${new Date().toLocaleTimeString()}`;
     document.getElementById("footer").textContent =
-      `Reads the local cache — the poller is the only thing that fetches. Refreshing every ${REFRESH_MS/1000}s.`;
+      `Reads the local cache — the poller is the only process that fetches. Refresh ${REFRESH_MS/1000}s.`;
   }catch(e){
-    document.getElementById("meta").textContent = `refresh failed: ${e.message}`;
+    document.getElementById("meta").textContent = `link failure: ${e.message}`;
   }
 }
 refresh(); setInterval(refresh, REFRESH_MS);
