@@ -26,6 +26,12 @@ class LLM(Protocol):
 class OllamaLLM:
     """Local, free. The default."""
 
+    #: How long Ollama keeps the model resident after a call. The default 5
+    #: minutes is too short once MLX is also using the GPU: loading Whisper and
+    #: the tuned router evicts this model, and the next agent call pays a ~16s
+    #: reload. Warm it is ~1.2s, so the reload is over 90% of a voice turn.
+    KEEP_ALIVE = "30m"
+
     def __init__(self, model: str = OLLAMA_MODEL, host: str = OLLAMA_HOST):
         import ollama
 
@@ -40,8 +46,25 @@ class OllamaLLM:
                 {"role": "user", "content": user},
             ],
             options={"num_predict": max_tokens, "temperature": 0},
+            keep_alive=self.KEEP_ALIVE,
         )
         return response["message"]["content"].strip()
+
+    def warm(self) -> None:
+        """Load the model now rather than on the first real request.
+
+        Called at voice startup: paying 16s while the user is still reading the
+        banner is invisible; paying it on their first question is not.
+        """
+        try:
+            self._client.chat(
+                model=self.model,
+                messages=[{"role": "user", "content": "hi"}],
+                options={"num_predict": 1},
+                keep_alive=self.KEEP_ALIVE,
+            )
+        except Exception:  # warming is an optimisation, never a failure
+            pass
 
 
 class AnthropicLLM:

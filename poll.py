@@ -30,7 +30,7 @@ SOURCES = [
     NewsSource(),
     NBASource(),
     sports.nfl(),
-    sports.f1(),
+    sports.f1_source(),
     sports.cricket(),
 ]
 

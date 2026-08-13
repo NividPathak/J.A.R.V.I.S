@@ -24,11 +24,24 @@ class NBASource(Source):
         # Games from ESPN (nba.com's live CDN 403s non-browser clients);
         # standings from nba_api, which serves them cleanly and needs no key.
         games = espn.scoreboard(espn.NBA)
+        self._enrich(games)
         return {
+            "label": "NBA",
             "games": games,
+            "events": games,
             "standings": nba_client.standings(),
             "live": espn.is_live(games),
         }
+
+    def _enrich(self, games: list[dict[str, Any]]) -> None:
+        """Box scores for the games worth showing. Live first; an unplayed
+        fixture has no detail to fetch."""
+        ordered = sorted(games, key=lambda g: 0 if g["state"] == espn.LIVE else 1)
+        for game in [g for g in ordered if g["state"] != espn.PRE][:3]:
+            try:
+                game["stats"] = espn.summary(espn.NBA, game["id"])
+            except Exception:
+                pass
 
     def interval(self, last: Entry | None) -> float:
         """Match the poll rate to what's actually happening on the court."""

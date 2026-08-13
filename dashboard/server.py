@@ -53,6 +53,10 @@ def build_state(cache: Cache) -> dict:
             "events": events,
             "live": bool(payload.get("live")),
             "standings": payload.get("standings"),
+            # F1 carries a classified result rather than a scoreline, so its
+            # panel is driven by these instead of the event list.
+            "last_race": payload.get("last_race"),
+            "race_control": payload.get("race_control"),
             "health": health(entry),
             "age_seconds": int(entry.age) if entry and entry.age is not None else None,
             "error": entry.last_error if entry else None,
