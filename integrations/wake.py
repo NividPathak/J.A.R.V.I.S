@@ -95,13 +95,15 @@ class WakeWord:
 
 
 def acknowledge() -> None:
-    """Tell the user they were heard.
+    """Tell the user they were heard, and wait for the tone to finish.
 
-    Without this you talk into a void and can't tell whether it woke, which is
-    the difference between a wake word feeling reliable and feeling broken.
+    Without the tone you talk into a void and can't tell whether it woke.
+    Without the *wait*, capture starts while the tone is still sounding, the
+    detector counts it as speech, and the recording runs on well past the point
+    you stopped talking.
     """
     if ACK_SOUND.exists():
-        subprocess.Popen(["afplay", str(ACK_SOUND)])
+        subprocess.run(["afplay", str(ACK_SOUND)], check=False, timeout=5)
 
 
 def available() -> tuple[bool, str]:

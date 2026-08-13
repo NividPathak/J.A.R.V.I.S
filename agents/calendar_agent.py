@@ -17,7 +17,16 @@ class CalendarAgent(CachedAgent):
 
         payload = entry.payload
         now = datetime.now()
-        lines = [f"Now: {now.strftime('%A %-d %B, %-I:%M %p')}", self._staleness_note(), ""]
+        lines = [
+            f"Now: {now.strftime('%A %-d %B, %-I:%M %p')}",
+            # Stated per-request as well as in the persona. Asked to "set a
+            # reminder", the model confidently claimed it had scheduled one and
+            # that "the calendar has been updated" — with no write path at all.
+            "This calendar view is READ-ONLY. You cannot add, move, delete or "
+            "remind. If asked to, say so and suggest doing it in Calendar.app.",
+            self._staleness_note(),
+            "",
+        ]
 
         upcoming = payload.get("next")
         lines.append(

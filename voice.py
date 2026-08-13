@@ -167,12 +167,20 @@ def main() -> int:
 
             started = time.perf_counter()
             heard = speech.listen(threshold)
+            captured = time.perf_counter()
             if not heard:
                 console.print("[dim](nothing heard)[/]\n")
                 continue
 
             turn(orchestrator, heard, speak=not args.no_speak, composer=composer)
-            console.print(f"[dim]full turn {time.perf_counter() - started:.1f}s[/]\n")
+            # Broken down because a single total hides which part is slow — the
+            # first run showed 34s turns that were almost entirely capture and
+            # speech playback, not thinking.
+            done = time.perf_counter()
+            console.print(
+                f"[dim]capture {captured - started:.1f}s · "
+                f"answer+speech {done - captured:.1f}s · total {done - started:.1f}s[/]\n"
+            )
         except KeyboardInterrupt:
             console.print("\n[dim]Goodbye, sir.[/]")
             return 0
