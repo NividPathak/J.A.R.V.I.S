@@ -116,6 +116,22 @@ def transcribe(audio: np.ndarray, model: str = MODEL) -> Heard:
     )
 
 
+def warm(model: str = MODEL) -> None:
+    """Load Whisper now rather than on the first thing the user says.
+
+    The model load is ~4s and happens inside the first `transcribe`, which is
+    exactly the moment someone is waiting for an answer. Doing it at startup —
+    while the banner is still printing — makes the first turn as fast as the
+    rest. Failure here is not fatal: the load simply happens later.
+    """
+    import numpy as np_
+
+    try:
+        transcribe(np_.zeros(int(SAMPLE_RATE * 0.5), dtype="float32"), model=model)
+    except Exception as e:
+        log.debug("whisper warm-up skipped: %s", e)
+
+
 def listen(threshold: float = DEFAULT_SILENCE) -> Heard:
     return transcribe(record(threshold))
 

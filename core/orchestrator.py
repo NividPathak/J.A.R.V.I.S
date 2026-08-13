@@ -48,9 +48,15 @@ class Orchestrator:
         self.router = router
         self.agents = agents
 
-    def handle(self, utterance: str) -> Response:
+    def handle(self, utterance: str, route: Route | None = None) -> Response:
+        """Answer one request.
+
+        `route` lets a caller that has already routed — the voice loop inspects
+        the route to decide whether the briefing fast path applies — hand it in
+        rather than paying for a second identical classification.
+        """
         started = time.perf_counter()
-        route = self.router.route(utterance)
+        route = route or self.router.route(utterance)
         log.info("routed %r -> %s", utterance[:60], route)
 
         if route.should_dispatch:

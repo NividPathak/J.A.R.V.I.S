@@ -57,7 +57,7 @@ blanking the page.
 | 3 | Morning briefing (pre-computed, pushed) | Done |
 | 4 | Fine-tuned router (LoRA on `llama3.2:3b`) | Done |
 | 5 | Live sports dashboard | Done |
-| 6 | Voice (Whisper → orchestrator → TTS) | Next |
+| 6 | Voice (Whisper → orchestrator → TTS) | Done |
 
 ---
 
@@ -128,6 +128,39 @@ unreadable for colour-blind users and vanishes in forced-colors mode, so the
 status colour never carries the meaning by itself. Light and dark are both
 defined from the same tokens rather than one being an automatic flip of the
 other.
+
+## Voice
+
+```bash
+python voice.py                 # press Enter to talk
+python voice.py --hands-free    # listens continuously
+python voice.py --router tuned  # fine-tuned router
+```
+
+Whisper on the GPU via MLX, macOS `say` for output — local, free, offline. Speech
+is a layer over the orchestrator rather than a rewrite: the same route and
+dispatch serve both this and the text CLI.
+
+| | |
+|---|---|
+| Transcription | ~150ms |
+| Briefing ("what does my day look like") | **~0.5s** |
+| Single-domain question | ~7s |
+
+**The broadest request is the fastest one.** A request routed to all three
+agents *is* the morning briefing, and answering it with three LLM calls took
+~19s — unbearable spoken. It now composes from the templated briefing instead:
+same content, ~5ms. Narrower questions still go to the agents, which is where
+the model earns its latency.
+
+**Everything is warmed at startup.** MLX (Whisper, tuned router) and Ollama
+compete for memory, so an unwarmed agent cost ~16s and an unwarmed Whisper ~4s —
+together making the first turn 9s against 2.5s after. Paid during startup,
+nobody is waiting on it.
+
+Capture ends on silence rather than a fixed window, with the threshold measured
+against actual room noise at startup. A fixed window either truncates a long
+request or leaves you waiting after a short one.
 
 ## Data sources
 
